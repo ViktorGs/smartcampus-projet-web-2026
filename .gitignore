@@ -1,0 +1,20 @@
+# Identifiants locaux (ne JAMAIS publier)
+api/config/config.local.php
+
+# Dépendances / build
+node_modules/
+*.log
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+
+# Divers
+/tmp/
+*.tmp
