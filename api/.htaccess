@@ -1,0 +1,11 @@
+# Réécriture des URL : toute requête /api/<route> -> index.php?route=<route>
+# (mod_rewrite est activé par défaut sous WAMP/XAMPP)
+RewriteEngine On
+
+# Ne pas réécrire si le fichier ou dossier existe réellement
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Tout le reste passe par le front controller, en conservant la route
+RewriteRule ^(.*)$ index.php?route=$1 [QSA,L]
