@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCampus — Gestion académique</title>
+    <link rel="stylesheet" href="assets/vendor/bootstrap/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/vendor/bootstrap-icons/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ================= VUE AUTHENTIFICATION (login / inscription) ================= -->
+<div id="auth-view" class="auth-wrapper d-none">
+    <div class="auth-card shadow-lg">
+        <div class="auth-brand text-center mb-4">
+            <i class="bi bi-mortarboard-fill"></i>
+            <h1 class="h3 mt-2 mb-0">SmartCampus</h1>
+            <p class="text-muted small">École d'ingénieurs · Gestion académique</p>
+        </div>
+
+        <!-- Onglets Connexion / Inscription -->
+        <ul class="nav nav-pills nav-justified mb-3" role="tablist">
+            <li class="nav-item"><button class="nav-link active" data-auth-tab="login">Connexion</button></li>
+            <li class="nav-item"><button class="nav-link" data-auth-tab="register">Inscription</button></li>
+        </ul>
+
+        <!-- Formulaire de connexion -->
+        <form id="login-form" class="auth-form">
+            <div class="mb-3">
+                <label class="form-label">Adresse e-mail</label>
+                <input type="email" name="email" class="form-control" required autocomplete="username">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Mot de passe</label>
+                <input type="password" name="password" class="form-control" required autocomplete="current-password">
+            </div>
+            <div class="alert alert-danger d-none" data-error></div>
+            <button class="btn btn-primary w-100" type="submit">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Se connecter
+            </button>
+            <div class="form-text mt-3">
+                Comptes de démo (mot de passe <code>Password123!</code>) :<br>
+                admin@smartcampus.fr · m.ali@smartcampus.fr · emma.martin@edu.smartcampus.fr
+            </div>
+        </form>
+
+        <!-- Formulaire d'inscription (étudiant) -->
+        <form id="register-form" class="auth-form d-none">
+            <div class="row g-2">
+                <div class="col-6 mb-2"><label class="form-label">Prénom</label><input name="first_name" class="form-control" required></div>
+                <div class="col-6 mb-2"><label class="form-label">Nom</label><input name="last_name" class="form-control" required></div>
+            </div>
+            <div class="mb-2"><label class="form-label">E-mail</label><input type="email" name="email" class="form-control" required></div>
+            <div class="mb-2"><label class="form-label">Mot de passe (min. 8 caractères)</label><input type="password" name="password" class="form-control" required></div>
+            <div class="row g-2">
+                <div class="col-7 mb-2"><label class="form-label">Filière</label><input name="filiere" class="form-control" placeholder="Informatique" required></div>
+                <div class="col-5 mb-2"><label class="form-label">Niveau</label>
+                    <select name="niveau" class="form-select" required>
+                        <option value="L1">L1</option><option value="L2">L2</option>
+                        <option value="L3">L3</option><option value="M1">M1</option><option value="M2">M2</option>
+                    </select>
+                </div>
+            </div>
+            <div class="alert alert-danger d-none" data-error></div>
+            <button class="btn btn-primary w-100" type="submit"><i class="bi bi-person-plus me-1"></i> Créer mon compte étudiant</button>
+        </form>
+    </div>
+</div>
+
+<!-- ================= VUE APPLICATION (après connexion) ================= -->
+<div id="app-view" class="d-none">
+    <!-- Barre supérieure -->
+    <nav class="navbar navbar-dark app-topbar px-3">
+        <button class="btn btn-link text-white d-md-none p-0 me-2" id="sidebar-toggle"><i class="bi bi-list fs-3"></i></button>
+        <span class="navbar-brand mb-0 h1"><i class="bi bi-mortarboard-fill me-2"></i>SmartCampus</span>
+        <div class="ms-auto d-flex align-items-center gap-3">
+            <!-- Cloche notifications -->
+            <div class="dropdown">
+                <button class="btn btn-link text-white position-relative p-0" data-bs-toggle="dropdown" id="notif-bell">
+                    <i class="bi bi-bell fs-5"></i>
+                    <span class="badge bg-danger rounded-pill position-absolute top-0 start-100 translate-middle d-none" id="notif-count"></span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-end notif-menu p-0" id="notif-list" style="width:320px"></div>
+            </div>
+            <!-- Menu utilisateur -->
+            <div class="dropdown">
+                <button class="btn btn-link text-white text-decoration-none dropdown-toggle p-0" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle fs-5 me-1"></i><span id="nav-username"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><span class="dropdown-item-text small text-muted" id="nav-role"></span></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#/profile"><i class="bi bi-person me-2"></i>Mon profil</a></li>
+                    <li><button class="dropdown-item" id="logout-btn"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</button></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="app-body">
+        <!-- Menu latéral (rempli selon le rôle) -->
+        <aside class="app-sidebar" id="sidebar"><nav class="nav flex-column" id="sidebar-nav"></nav></aside>
+        <!-- Contenu de la page courante -->
+        <main class="app-content" id="page-content"></main>
+    </div>
+</div>
+
+<!-- Conteneur des toasts (notifications éphémères) -->
+<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container" style="z-index:1100"></div>
+
+<script src="assets/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+<script src="assets/vendor/chartjs/chart.umd.min.js"></script>
+<script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
