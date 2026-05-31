@@ -1,0 +1,1083 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Wireframes — SmartCampus</title>
+<style>
+  @page { size: A4 portrait; margin: 12mm 12mm 12mm 12mm; }
+  @page :first { margin: 0; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+    font-size: 11pt;
+    color: #1a1a1a;
+    line-height: 1.45;
+  }
+
+  :root { --ece: #00807F; --ece-soft: #E6F1F1; --gray-1:#f5f5f5; --gray-2:#e0e0e0; --gray-3:#bdbdbd; --gray-4:#757575; }
+
+  h1, h2, h3 { color: var(--ece); font-weight: 700; margin: 0; }
+  p { margin: 0 0 2mm 0; }
+
+  /* === PAGE DE GARDE === */
+  .cover {
+    height: 297mm; width: 210mm;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .cv-logo { position: absolute; top: 22mm; left: 22mm; }
+  .cv-logo img { width: 30mm; height: 30mm; display: block; }
+  .cv-ing { position: absolute; top: 22mm; right: 22mm; font-size: 10pt; color: #4a4a4a; }
+  .cv-title {
+    position: absolute; top: 90mm; left: 22mm; right: 22mm;
+    border-top: 1.2pt solid var(--ece);
+    border-bottom: 1.2pt solid var(--ece);
+    padding: 6mm 4mm;
+    text-align: center;
+  }
+  .cv-title .doc-type { color: var(--ece); font-size: 24pt; font-weight: 800; }
+  .cv-title .doc-sub { color: var(--ece); font-size: 13pt; font-style: italic; margin-top: 3mm; }
+  .cv-info {
+    position: absolute; top: 145mm; left: 22mm; right: 22mm;
+    background: var(--ece-soft);
+    border-left: 2pt solid var(--ece);
+    padding: 5mm 6mm;
+    font-size: 10.5pt;
+  }
+  .cv-meta { position: absolute; top: 195mm; left: 22mm; right: 22mm; }
+  .cv-meta .row { display: flex; justify-content: space-between; margin-bottom: 4mm; }
+  .cv-meta .label { font-style: italic; color: #555; }
+  .cv-list { padding-left: 5mm; margin: 2mm 0; font-size: 10.5pt; }
+  .cv-footer {
+    position: absolute; bottom: 18mm; left: 22mm; right: 22mm;
+    border-top: 0.4pt solid #c8c8c8;
+    padding-top: 4mm; font-size: 9.5pt; color: #4a4a4a;
+    display: flex; justify-content: space-between;
+  }
+
+  /* === EN-TÊTE COMMUN === */
+  .pg-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 0.4pt solid #d0d0d0;
+    padding-bottom: 2mm; margin-bottom: 5mm;
+  }
+  .pg-header img { width: 14mm; height: 14mm; }
+  .pg-header .right { font-size: 9pt; color: #4a4a4a; text-align: right; }
+
+  .wf-page { page-break-before: always; }
+  .wf-title { display: flex; align-items: baseline; gap: 5mm; margin-bottom: 3mm; }
+  .wf-title .num {
+    background: var(--ece); color: #fff;
+    width: 10mm; height: 10mm;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 14pt;
+  }
+  .wf-title h2 { font-size: 16pt; }
+  .wf-purpose { font-size: 10.5pt; color: #555; margin-bottom: 4mm; }
+
+  /* === FRAME (la "fenêtre" du wireframe) === */
+  .frame {
+    position: relative;
+    width: 100%;
+    height: 130mm;
+    background: #fff;
+    border: 1.5px solid #333;
+    box-shadow: 2px 2px 0 #999;
+    overflow: hidden;
+    margin-bottom: 4mm;
+  }
+  .frame.tall { height: 140mm; }
+  .frame.short { height: 100mm; }
+
+  /* Composants wireframe */
+  .wf-topbar {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 9mm;
+    background: var(--gray-2);
+    border-bottom: 1px solid #888;
+    display: flex; align-items: center;
+    padding: 0 4mm;
+    font-size: 10pt;
+    gap: 4mm;
+  }
+  .wf-topbar .burger {
+    width: 6mm; height: 6mm;
+    background:
+      linear-gradient(#555 1px, transparent 1px) 0 1mm / 100% 2mm,
+      linear-gradient(#555 1px, transparent 1px) 0 3mm / 100% 2mm,
+      linear-gradient(#555 1px, transparent 1px) 0 5mm / 100% 2mm;
+  }
+  .wf-topbar .brand { font-weight: 700; color: #333; }
+  .wf-topbar .spacer { flex: 1; }
+  .wf-topbar .icon-bell { width: 5mm; height: 5mm; border: 1.5px solid #555; border-radius: 50% 50% 0 0; }
+  .wf-topbar .avatar { width: 6mm; height: 6mm; background: var(--gray-3); border-radius: 50%; }
+
+  .wf-sidebar {
+    position: absolute; top: 9mm; bottom: 0; left: 0;
+    width: 38mm;
+    background: var(--gray-1);
+    border-right: 1px solid #888;
+    padding: 4mm 3mm;
+    font-size: 9pt;
+    color: #555;
+  }
+  .wf-sidebar .item {
+    padding: 2mm 2mm;
+    margin-bottom: 1mm;
+    background: #fff;
+    border: 0.5px solid var(--gray-3);
+    border-radius: 1mm;
+  }
+  .wf-sidebar .item.active { background: var(--ece-soft); border-left: 2px solid var(--ece); font-weight: 600; color: #333; }
+
+  .wf-content {
+    position: absolute; top: 9mm; right: 0; bottom: 0; left: 38mm;
+    padding: 5mm;
+    overflow: hidden;
+  }
+  .wf-content.full { left: 0; }
+
+  /* Génériques */
+  .wf-box {
+    background: #fafafa;
+    border: 1px dashed #999;
+    padding: 3mm;
+    font-size: 9pt;
+    color: #555;
+    text-align: center;
+  }
+  .wf-card {
+    background: #fff;
+    border: 1px solid #888;
+    box-shadow: 1px 1px 0 #ddd;
+    padding: 3mm;
+  }
+  .wf-card .ch { font-weight: 600; color: #333; margin-bottom: 1mm; font-size: 10pt; }
+  .wf-line {
+    height: 1.5mm;
+    background: var(--gray-2);
+    margin: 1mm 0;
+    border-radius: 0.5mm;
+  }
+  .wf-line.short { width: 40%; }
+  .wf-line.medium { width: 70%; }
+  .wf-btn {
+    display: inline-block;
+    background: var(--ece);
+    color: #fff;
+    padding: 1mm 3mm;
+    border-radius: 1mm;
+    font-size: 9pt;
+    font-weight: 600;
+  }
+  .wf-btn.ghost {
+    background: #fff;
+    border: 1px solid var(--ece);
+    color: var(--ece);
+  }
+  .wf-input {
+    background: #fff;
+    border: 1px solid #888;
+    padding: 1.5mm 2mm;
+    font-size: 9pt;
+    color: #aaa;
+    border-radius: 0.5mm;
+  }
+  .wf-img {
+    background:
+      repeating-linear-gradient(45deg, var(--gray-2), var(--gray-2) 2mm, var(--gray-1) 2mm, var(--gray-1) 4mm);
+    border: 1px solid #888;
+  }
+  .wf-img.avatar { border-radius: 50%; }
+  .wf-tag {
+    display: inline-block;
+    background: var(--gray-2);
+    padding: 0.5mm 2mm;
+    font-size: 8.5pt;
+    border-radius: 0.5mm;
+    color: #444;
+  }
+
+  /* Annotations sous le wireframe */
+  .annot { font-size: 10pt; }
+  .annot table { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+  .annot th { background: var(--ece); color: #fff; text-align: left; padding: 1.5mm 2mm; font-weight: 600; font-size: 9.5pt; }
+  .annot td { padding: 1.5mm 2mm; border: 0.3pt solid #c8c8c8; font-size: 9.5pt; }
+  .annot td.zone { width: 28%; font-weight: 600; color: #333; }
+  .annot tr:nth-child(even) td { background: #fafafa; }
+
+  /* Numéros d'annotation sur le wireframe */
+  .anchor {
+    position: absolute;
+    background: #ff6b35;
+    color: #fff;
+    width: 5mm; height: 5mm;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 9pt;
+    border: 1.5px solid #fff;
+    box-shadow: 0 0 0 1px #ff6b35;
+    z-index: 10;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== PAGE DE GARDE ===================== -->
+<section class="cover">
+  <div class="cv-logo"><img src="assets/ece-logo.jpg" alt="ECE"></div>
+  <div class="cv-ing">ING2 — Groupe 09</div>
+
+  <div class="cv-title">
+    <div class="doc-type">WIREFRAMES</div>
+    <div class="doc-sub">Maquettes filaires des écrans · Projet Web Dynamique 2026 — SmartCampus</div>
+  </div>
+
+  <div class="cv-info">
+    <strong>À propos de ce document.</strong> Les wireframes (ou maquettes filaires) décrivent
+    la <strong>structure</strong> et l'<strong>agencement</strong> des éléments de chaque écran
+    sans entrer dans le détail graphique. Ils permettent de valider l'ergonomie et la
+    hiérarchie de l'information avant la mise en forme finale.
+    <ul class="cv-list">
+      <li>Les rectangles gris représentent des zones (en-tête, sidebar, contenu).</li>
+      <li>Les blocs hachurés représentent des images ou avatars.</li>
+      <li>Les lignes grises symbolisent du texte (titres, paragraphes).</li>
+      <li>Les boutons et champs de saisie sont schématisés mais identifiables.</li>
+      <li>Les <span style="background:#ff6b35;color:#fff;padding:0 2mm;border-radius:50%;font-size:9pt;">1</span> orange numérotent les zones décrites en dessous.</li>
+    </ul>
+  </div>
+
+  <div class="cv-meta">
+    <div class="row">
+      <div>
+        <div class="label">Auteurs :</div>
+        Viktor GOUSSOT · Nicolas CARMINATI · Alexis OSORIO · Louis PEZE
+      </div>
+      <div style="text-align:right;">
+        <div class="label">Enseignant :</div>
+        M. HINA
+      </div>
+    </div>
+    <div class="row">
+      <div>
+        <div class="label">Date :</div>
+        28 mai 2026
+      </div>
+      <div style="text-align:right;">
+        <div class="label">Écrans documentés :</div>
+        8 wireframes principaux
+      </div>
+    </div>
+  </div>
+
+  <div class="cv-footer">
+    <div>Nous attestons que ce travail est original et a été rédigé de manière autonome.</div>
+    <div>Paris, le 28/05/2026</div>
+  </div>
+</section>
+
+<!-- ===================== WIREFRAME 1 : LAYOUT GÉNÉRAL ===================== -->
+<section class="wf-page">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="right">ING2 — Groupe 09 · SmartCampus<br><span style="color:#999">Wireframes</span></div>
+  </div>
+
+  <div class="wf-title">
+    <span class="num">1</span>
+    <h2>Gabarit général de l'application</h2>
+  </div>
+  <p class="wf-purpose">
+    Toutes les pages internes partagent ce gabarit : <strong>barre supérieure fixe</strong>,
+    <strong>menu latéral adaptatif au rôle</strong>, et <strong>zone de contenu principale</strong>.
+    Cette cohérence facilite l'apprentissage et le repérage de l'utilisateur.
+  </p>
+
+  <div class="frame">
+    <div class="anchor" style="top:1mm; left:2mm;">1</div>
+    <div class="wf-topbar">
+      <div class="burger"></div>
+      <div class="brand">SmartCampus</div>
+      <div class="spacer"></div>
+      <div class="icon-bell" title="Notifications"></div>
+      <span style="font-size:9pt; color:#555;">Notifications (3)</span>
+      <div class="avatar"></div>
+      <span style="font-size:9pt; color:#555;">Nom utilisateur ▾</span>
+    </div>
+
+    <div class="anchor" style="top:14mm; left:2mm;">2</div>
+    <div class="wf-sidebar">
+      <div style="font-size:8pt; color:#888; margin-bottom:2mm; text-transform:uppercase;">Menu</div>
+      <div class="item active">▤ Tableau de bord</div>
+      <div class="item">📚 Mes cours</div>
+      <div class="item">🎓 Catalogue</div>
+      <div class="item">📝 Notes</div>
+      <div class="item">📅 Emploi du temps</div>
+      <div class="item">✉ Messagerie</div>
+      <div class="item">⚙ Profil</div>
+    </div>
+
+    <div class="anchor" style="top:14mm; left:42mm;">3</div>
+    <div class="wf-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4mm;">
+        <div style="font-weight:700; font-size:12pt; color:#333;">Titre de la page</div>
+        <div><span class="wf-btn ghost">Action secondaire</span> &nbsp; <span class="wf-btn">Action principale</span></div>
+      </div>
+      <div class="wf-box" style="height:35mm; display:flex; align-items:center; justify-content:center;">
+        Zone de contenu (formulaires, tableaux, cartes, etc.)
+      </div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:4mm; margin-top:4mm;">
+        <div class="wf-box" style="height:30mm;">Panneau A</div>
+        <div class="wf-box" style="height:30mm;">Panneau B</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annot">
+    <table>
+      <thead><tr><th>Zone</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="zone">1 · Barre supérieure</td><td>Logo de l'application, accès aux notifications, menu utilisateur (profil, déconnexion). Toujours visible.</td></tr>
+        <tr><td class="zone">2 · Menu latéral</td><td>Navigation principale. Le contenu varie selon le rôle (admin / enseignant / étudiant). L'élément actif est mis en évidence. Replié en burger sur mobile.</td></tr>
+        <tr><td class="zone">3 · Zone de contenu</td><td>Titre + actions à droite (boutons primaires/secondaires). Contenu dynamique selon la page : tableau, formulaire, cartes, graphiques.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== WIREFRAME 2 : LOGIN ===================== -->
+<section class="wf-page">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="right">ING2 — Groupe 09 · SmartCampus<br><span style="color:#999">Wireframes</span></div>
+  </div>
+
+  <div class="wf-title">
+    <span class="num">2</span>
+    <h2>Connexion / Inscription</h2>
+  </div>
+  <p class="wf-purpose">
+    Première interaction avec l'application. Formulaire centré, simple, avec onglets entre
+    <em>connexion</em> et <em>inscription étudiant</em>. Mention des comptes de démonstration
+    pour les correcteurs.
+  </p>
+
+  <div class="frame short" style="background: linear-gradient(135deg, #e6f1f1 0%, #b3d8d8 100%);">
+    <div style="position:absolute; top:20mm; left:50%; transform:translateX(-50%); width:90mm; background:#fff; border:1px solid #888; box-shadow:2px 2px 0 #999; padding:6mm;">
+      <div class="anchor" style="top:-3mm; left:-3mm;">1</div>
+      <div style="text-align:center; font-size:14pt; font-weight:700; color:var(--ece); margin-bottom:2mm;">🎓 SmartCampus</div>
+      <div style="text-align:center; font-size:9pt; color:#777; margin-bottom:4mm;">Plateforme de gestion académique</div>
+
+      <div class="anchor" style="top:18mm; left:-5mm;">2</div>
+      <div style="display:flex; border-bottom:1px solid #ccc; margin-bottom:4mm;">
+        <div style="flex:1; text-align:center; padding:2mm; border-bottom:2px solid var(--ece); font-weight:600; color:var(--ece); font-size:10pt;">Connexion</div>
+        <div style="flex:1; text-align:center; padding:2mm; color:#888; font-size:10pt;">Inscription</div>
+      </div>
+
+      <div class="anchor" style="top:40mm; left:-5mm;">3</div>
+      <div style="margin-bottom:3mm;">
+        <div style="font-size:9pt; color:#555; margin-bottom:1mm;">E-mail</div>
+        <div class="wf-input">vous@exemple.fr</div>
+      </div>
+      <div style="margin-bottom:5mm;">
+        <div style="font-size:9pt; color:#555; margin-bottom:1mm;">Mot de passe</div>
+        <div class="wf-input">••••••••</div>
+      </div>
+
+      <div class="anchor" style="top:67mm; left:-5mm;">4</div>
+      <div style="text-align:center; margin-bottom:4mm;">
+        <span class="wf-btn" style="display:block; padding:2mm;">Se connecter</span>
+      </div>
+
+      <div class="anchor" style="top:80mm; left:-5mm;">5</div>
+      <div style="background:var(--gray-1); border:1px dashed #999; padding:2mm; font-size:8.5pt; color:#555;">
+        <strong>Comptes de démonstration :</strong><br>
+        admin@smartcampus.fr / Password123!<br>
+        teacher@smartcampus.fr / Password123!<br>
+        student@smartcampus.fr / Password123!
+      </div>
+    </div>
+  </div>
+
+  <div class="annot">
+    <table>
+      <thead><tr><th>Zone</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="zone">1 · En-tête</td><td>Logo et nom de l'application — repère immédiat de marque.</td></tr>
+        <tr><td class="zone">2 · Onglets</td><td>Bascule entre connexion et inscription publique (étudiants uniquement).</td></tr>
+        <tr><td class="zone">3 · Champs de saisie</td><td>E-mail et mot de passe, validation côté client (format) et serveur (existence).</td></tr>
+        <tr><td class="zone">4 · Bouton primaire</td><td>Envoi du formulaire. Désactivé tant que les champs ne sont pas valides.</td></tr>
+        <tr><td class="zone">5 · Comptes démo</td><td>Encart pédagogique destiné aux correcteurs pour tester rapidement les trois rôles.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== WIREFRAME 3 : DASHBOARD ÉTUDIANT ===================== -->
+<section class="wf-page">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="right">ING2 — Groupe 09 · SmartCampus<br><span style="color:#999">Wireframes</span></div>
+  </div>
+
+  <div class="wf-title">
+    <span class="num">3</span>
+    <h2>Tableau de bord (étudiant)</h2>
+  </div>
+  <p class="wf-purpose">
+    Vue d'accueil après connexion. Donne une <strong>synthèse en un coup d'œil</strong> :
+    nombre de cours, moyenne générale, crédits validés, notifications en attente, prochaines
+    séances et notes récentes.
+  </p>
+
+  <div class="frame">
+    <div class="wf-topbar">
+      <div class="burger"></div><div class="brand">SmartCampus</div>
+      <div class="spacer"></div>
+      <div class="icon-bell"></div><span style="font-size:9pt;">(3)</span>
+      <div class="avatar"></div><span style="font-size:9pt;">Emma D. ▾</span>
+    </div>
+    <div class="wf-sidebar">
+      <div class="item active">▤ Tableau de bord</div>
+      <div class="item">📚 Mes cours</div>
+      <div class="item">🎓 Catalogue</div>
+      <div class="item">📝 Mes notes</div>
+      <div class="item">📅 Emploi du temps</div>
+      <div class="item">✉ Messagerie</div>
+    </div>
+    <div class="wf-content">
+      <div class="anchor" style="top:14mm; left:42mm;">1</div>
+      <div style="font-size:13pt; font-weight:700; color:#333; margin-bottom:3mm;">Bonjour Emma 👋</div>
+
+      <div class="anchor" style="top:24mm; left:42mm;">2</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:3mm; margin-bottom:5mm;">
+        <div class="wf-card" style="text-align:center;">
+          <div style="font-size:18pt; font-weight:800; color:var(--ece);">3</div>
+          <div style="font-size:8.5pt; color:#666;">Cours suivis</div>
+        </div>
+        <div class="wf-card" style="text-align:center;">
+          <div style="font-size:18pt; font-weight:800; color:var(--ece);">16.3</div>
+          <div style="font-size:8.5pt; color:#666;">Moyenne /20</div>
+        </div>
+        <div class="wf-card" style="text-align:center;">
+          <div style="font-size:18pt; font-weight:800; color:var(--ece);">9</div>
+          <div style="font-size:8.5pt; color:#666;">Crédits ECTS</div>
+        </div>
+        <div class="wf-card" style="text-align:center;">
+          <div style="font-size:18pt; font-weight:800; color:var(--ece);">2</div>
+          <div style="font-size:8.5pt; color:#666;">Notifications</div>
+        </div>
+      </div>
+
+      <div class="anchor" style="top:78mm; left:42mm;">3</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:4mm;">
+        <div class="wf-card">
+          <div class="ch">📅 Prochaines séances</div>
+          <div class="wf-line medium"></div>
+          <div class="wf-line short"></div>
+          <div class="wf-line medium"></div>
+          <div class="wf-line short"></div>
+          <div class="wf-line medium"></div>
+          <div class="wf-line"></div>
+        </div>
+        <div class="wf-card">
+          <div class="ch">📝 Notes récentes</div>
+          <div class="wf-line medium"></div>
+          <div class="wf-line short"></div>
+          <div class="wf-line medium"></div>
+          <div class="wf-line short"></div>
+          <div class="wf-line medium"></div>
+          <div class="wf-line"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annot">
+    <table>
+      <thead><tr><th>Zone</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="zone">1 · Salutation personnalisée</td><td>Renforce le sentiment de personnalisation et confirme le compte connecté.</td></tr>
+        <tr><td class="zone">2 · Cartes statistiques</td><td>Indicateurs clés visibles au premier coup d'œil. Calculés côté serveur.</td></tr>
+        <tr><td class="zone">3 · Panneaux d'activité</td><td>Deux blocs d'information complémentaire (agenda + notes). Chaque ligne est cliquable et mène à la page concernée.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== WIREFRAME 4 : CATALOGUE DES COURS ===================== -->
+<section class="wf-page">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="right">ING2 — Groupe 09 · SmartCampus<br><span style="color:#999">Wireframes</span></div>
+  </div>
+
+  <div class="wf-title">
+    <span class="num">4</span>
+    <h2>Catalogue des cours</h2>
+  </div>
+  <p class="wf-purpose">
+    Liste des cours sous forme de <strong>cartes filtrables</strong>. Permet à l'étudiant de
+    parcourir l'offre, filtrer par niveau / semestre / département, et s'inscrire en un clic
+    (sous réserve des règles métier).
+  </p>
+
+  <div class="frame">
+    <div class="wf-topbar">
+      <div class="burger"></div><div class="brand">SmartCampus</div>
+      <div class="spacer"></div>
+      <div class="icon-bell"></div><div class="avatar"></div>
+    </div>
+    <div class="wf-sidebar">
+      <div class="item">▤ Tableau de bord</div>
+      <div class="item">📚 Mes cours</div>
+      <div class="item active">🎓 Catalogue</div>
+      <div class="item">📝 Mes notes</div>
+      <div class="item">📅 Emploi du temps</div>
+    </div>
+    <div class="wf-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4mm;">
+        <div style="font-weight:700; font-size:12pt; color:#333;">Catalogue des cours</div>
+      </div>
+
+      <div class="anchor" style="top:23mm; left:42mm;">1</div>
+      <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr; gap:2mm; margin-bottom:4mm;">
+        <div class="wf-input">🔍 Rechercher…</div>
+        <div class="wf-input">Niveau ▾</div>
+        <div class="wf-input">Semestre ▾</div>
+        <div class="wf-input">Département ▾</div>
+        <div class="wf-input">Trier par ▾</div>
+      </div>
+
+      <div class="anchor" style="top:43mm; left:42mm;">2</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:3mm;">
+        <!-- carte 1 -->
+        <div class="wf-card">
+          <div style="display:flex; justify-content:space-between; font-size:8.5pt; color:#777; margin-bottom:1mm;">
+            <span>INFO-201</span><span class="wf-tag">L2 · S3</span>
+          </div>
+          <div style="font-weight:700; font-size:10pt; color:#333;">Algorithmique avancée</div>
+          <div style="display:flex; align-items:center; gap:2mm; margin:2mm 0;">
+            <div class="wf-img avatar" style="width:6mm;height:6mm;"></div>
+            <span style="font-size:9pt;">M. Ali</span>
+          </div>
+          <div class="wf-line short"></div>
+          <div style="display:flex; justify-content:space-between; font-size:8.5pt; color:#666; margin-top:2mm;">
+            <span>👥 2/30</span><span>ECTS 5</span>
+          </div>
+          <div style="display:flex; gap:1.5mm; margin-top:2mm;">
+            <span class="wf-btn ghost" style="flex:1; text-align:center; font-size:8pt;">Détails</span>
+            <span class="wf-btn" style="flex:1; text-align:center; font-size:8pt;">S'inscrire</span>
+          </div>
+        </div>
+        <!-- carte 2 -->
+        <div class="wf-card">
+          <div style="display:flex; justify-content:space-between; font-size:8.5pt; color:#777; margin-bottom:1mm;">
+            <span>INFO-203</span><span class="wf-tag">L2 · S3</span>
+          </div>
+          <div style="font-weight:700; font-size:10pt; color:#333;">Bases de données</div>
+          <div style="display:flex; align-items:center; gap:2mm; margin:2mm 0;">
+            <div class="wf-img avatar" style="width:6mm;height:6mm;"></div>
+            <span style="font-size:9pt;">Mme Hamdi</span>
+          </div>
+          <div class="wf-line short"></div>
+          <div style="display:flex; justify-content:space-between; font-size:8.5pt; color:#666; margin-top:2mm;">
+            <span>👥 28/30</span><span>ECTS 4</span>
+          </div>
+          <div style="display:flex; gap:1.5mm; margin-top:2mm;">
+            <span class="wf-btn ghost" style="flex:1; text-align:center; font-size:8pt;">Détails</span>
+            <span class="wf-btn" style="flex:1; text-align:center; font-size:8pt;">S'inscrire</span>
+          </div>
+        </div>
+        <!-- carte 3 -->
+        <div class="wf-card">
+          <div style="display:flex; justify-content:space-between; font-size:8.5pt; color:#777; margin-bottom:1mm;">
+            <span>MATH-202</span><span class="wf-tag">L2 · S3</span>
+          </div>
+          <div style="font-weight:700; font-size:10pt; color:#333;">Maths pour l'ingénieur</div>
+          <div style="display:flex; align-items:center; gap:2mm; margin:2mm 0;">
+            <div class="wf-img avatar" style="width:6mm;height:6mm;"></div>
+            <span style="font-size:9pt;">M. Bensalem</span>
+          </div>
+          <div class="wf-line short"></div>
+          <div style="display:flex; justify-content:space-between; font-size:8.5pt; color:#666; margin-top:2mm;">
+            <span>👥 30/30</span><span>ECTS 4</span>
+          </div>
+          <div style="display:flex; gap:1.5mm; margin-top:2mm;">
+            <span class="wf-btn ghost" style="flex:1; text-align:center; font-size:8pt;">Détails</span>
+            <span class="wf-btn ghost" style="flex:1; text-align:center; font-size:8pt; background:#eee; color:#999; border-color:#aaa;">Complet</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="anchor" style="top:115mm; left:42mm;">3</div>
+      <div style="text-align:center; margin-top:5mm; font-size:9pt; color:#777;">
+        Pagination · &lt; 1 / 5 &gt;
+      </div>
+    </div>
+  </div>
+
+  <div class="annot">
+    <table>
+      <thead><tr><th>Zone</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="zone">1 · Barre de filtres</td><td>Recherche textuelle + 4 filtres déroulants. La requête est répercutée en URL pour permettre le partage du résultat filtré.</td></tr>
+        <tr><td class="zone">2 · Grille de cartes</td><td>Une carte = un cours, avec code, intitulé, enseignant, taux de remplissage, ECTS. Bouton d'inscription désactivé si le cours est complet.</td></tr>
+        <tr><td class="zone">3 · Pagination</td><td>Au-delà de 12 cours, pagination côté serveur pour préserver les performances.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== WIREFRAME 5 : DÉTAIL COURS ===================== -->
+<section class="wf-page">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="right">ING2 — Groupe 09 · SmartCampus<br><span style="color:#999">Wireframes</span></div>
+  </div>
+
+  <div class="wf-title">
+    <span class="num">5</span>
+    <h2>Détail d'un cours — vue enseignant (saisie des notes)</h2>
+  </div>
+  <p class="wf-purpose">
+    Vue enseignant d'un cours. Affiche l'<strong>en-tête du cours</strong>, les
+    <strong>créneaux</strong> et surtout la <strong>grille de notes</strong> des étudiants
+    inscrits, avec édition et verrouillage final.
+  </p>
+
+  <div class="frame">
+    <div class="wf-topbar">
+      <div class="burger"></div><div class="brand">SmartCampus</div>
+      <div class="spacer"></div>
+      <div class="icon-bell"></div><div class="avatar"></div><span style="font-size:9pt;">M. Ali ▾</span>
+    </div>
+    <div class="wf-sidebar">
+      <div class="item">▤ Tableau de bord</div>
+      <div class="item active">📚 Mes cours</div>
+      <div class="item">📝 Notes</div>
+      <div class="item">📅 Emploi du temps</div>
+    </div>
+    <div class="wf-content">
+      <div class="anchor" style="top:14mm; left:42mm;">1</div>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:3mm;">
+        <div>
+          <div style="font-size:8.5pt; color:#777;">INFO-201 · L2 · S3 · 5 ECTS</div>
+          <div style="font-weight:700; font-size:13pt; color:#333;">Algorithmique avancée</div>
+        </div>
+        <span class="wf-btn ghost" style="font-size:9pt;">← Retour</span>
+      </div>
+
+      <div class="anchor" style="top:30mm; left:42mm;">2</div>
+      <div style="display:grid; grid-template-columns:2fr 1fr; gap:3mm; margin-bottom:4mm;">
+        <div class="wf-card">
+          <div class="ch">Description &amp; informations</div>
+          <div class="wf-line medium"></div>
+          <div class="wf-line"></div>
+          <div class="wf-line short"></div>
+        </div>
+        <div class="wf-card">
+          <div class="ch">📅 Créneaux</div>
+          <div style="font-size:9pt;">Lundi 08–10h · Salle B201</div>
+          <div style="font-size:9pt;">Mercredi 14–16h · Salle B201</div>
+        </div>
+      </div>
+
+      <div class="anchor" style="top:65mm; left:42mm;">3</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2mm;">
+        <div style="font-weight:600; color:#333; font-size:10pt;">Notes des étudiants inscrits (12)</div>
+        <div>
+          <span class="wf-btn ghost" style="font-size:8.5pt;">+ Inscrire étudiant</span>
+          <span class="wf-btn" style="font-size:8.5pt;">🔒 Valider les notes</span>
+        </div>
+      </div>
+
+      <div class="anchor" style="top:85mm; left:42mm;">4</div>
+      <div style="border:1px solid #888;">
+        <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; background:var(--ece); color:#fff; font-size:8.5pt; font-weight:600;">
+          <div style="padding:1.5mm 2mm;">Étudiant</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">CC1</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">CC2</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">DS</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Projet</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Examen</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Moyenne</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Résultat</div>
+        </div>
+        <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; font-size:9pt; border-top:1px solid #ddd;">
+          <div style="padding:1.5mm 2mm;">Martin Dubois</div>
+          <div style="padding:1.5mm 2mm; text-align:center; background:#fafafa;">15.5 🔒</div>
+          <div style="padding:1.5mm 2mm; text-align:center; background:#fafafa;">14.0 🔒</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">+</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">+</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">16.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-weight:600;">15.38</div>
+          <div style="padding:1.5mm 2mm; text-align:center; color:#0a8c2a;">Admis</div>
+        </div>
+        <div style="display:grid; grid-template-columns:2fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr; font-size:9pt; border-top:1px solid #ddd;">
+          <div style="padding:1.5mm 2mm;">Emma Bernard</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">11.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">12.5</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">+</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">+</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">+</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-weight:600;">11.75</div>
+          <div style="padding:1.5mm 2mm; text-align:center; color:#0a8c2a;">Admis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annot">
+    <table>
+      <thead><tr><th>Zone</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="zone">1 · Bandeau du cours</td><td>Identité du cours (code, niveau, semestre, ECTS) et bouton de retour vers la liste.</td></tr>
+        <tr><td class="zone">2 · Description &amp; créneaux</td><td>Informations utiles à l'enseignant pour la prochaine séance.</td></tr>
+        <tr><td class="zone">3 · Actions principales</td><td>« + Inscrire » (inscription manuelle), « Valider les notes » (verrouillage définitif).</td></tr>
+        <tr><td class="zone">4 · Grille de notes</td><td>Une ligne par étudiant, une colonne par type d'évaluation. Cliquer sur une cellule ouvre une saisie inline. Les notes verrouillées (🔒) ne sont plus modifiables.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== WIREFRAME 6 : MES NOTES ===================== -->
+<section class="wf-page">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="right">ING2 — Groupe 09 · SmartCampus<br><span style="color:#999">Wireframes</span></div>
+  </div>
+
+  <div class="wf-title">
+    <span class="num">6</span>
+    <h2>Mes notes (étudiant)</h2>
+  </div>
+  <p class="wf-purpose">
+    Vue récapitulative des notes par cours, avec calcul de moyenne et résultat (admis / non admis).
+    Possibilité de télécharger un <strong>relevé de notes PDF</strong> officiel.
+  </p>
+
+  <div class="frame">
+    <div class="wf-topbar">
+      <div class="burger"></div><div class="brand">SmartCampus</div>
+      <div class="spacer"></div>
+      <div class="icon-bell"></div><div class="avatar"></div>
+    </div>
+    <div class="wf-sidebar">
+      <div class="item">▤ Tableau de bord</div>
+      <div class="item">📚 Mes cours</div>
+      <div class="item active">📝 Mes notes</div>
+      <div class="item">📅 Emploi du temps</div>
+    </div>
+    <div class="wf-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4mm;">
+        <div style="font-weight:700; font-size:13pt; color:#333;">Mes notes — semestre S3</div>
+        <div>
+          <span class="wf-btn ghost" style="font-size:9pt;">Semestre ▾</span>
+          <span class="wf-btn" style="font-size:9pt;">⤓ Télécharger le relevé PDF</span>
+        </div>
+      </div>
+
+      <div class="anchor" style="top:30mm; left:42mm;">1</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:3mm; margin-bottom:4mm;">
+        <div class="wf-card" style="text-align:center;">
+          <div style="font-size:8.5pt; color:#666;">Moyenne semestre</div>
+          <div style="font-size:18pt; font-weight:800; color:var(--ece); margin:1mm 0;">14.3 / 20</div>
+        </div>
+        <div class="wf-card" style="text-align:center;">
+          <div style="font-size:8.5pt; color:#666;">ECTS validés</div>
+          <div style="font-size:18pt; font-weight:800; color:var(--ece); margin:1mm 0;">21 / 30</div>
+        </div>
+        <div class="wf-card" style="text-align:center;">
+          <div style="font-size:8.5pt; color:#666;">Statut</div>
+          <div style="font-size:14pt; font-weight:700; color:#0a8c2a; margin:1mm 0;">✓ Admis</div>
+        </div>
+      </div>
+
+      <div class="anchor" style="top:75mm; left:42mm;">2</div>
+      <div style="border:1px solid #888;">
+        <div style="display:grid; grid-template-columns:2fr 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr 1fr; background:var(--ece); color:#fff; font-size:8.5pt; font-weight:600;">
+          <div style="padding:1.5mm 2mm;">Cours</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">CC1</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">CC2</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">DS</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Projet</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Examen</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Moyenne</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Résultat</div>
+        </div>
+        <div style="display:grid; grid-template-columns:2fr 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr 1fr; font-size:9pt; border-top:1px solid #ddd;">
+          <div style="padding:1.5mm 2mm;">INFO-201 — Algorithmique avancée</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">15.5</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">14.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">16.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">15.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">14.5</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-weight:600;">15.00</div>
+          <div style="padding:1.5mm 2mm; text-align:center; color:#0a8c2a;">Admis</div>
+        </div>
+        <div style="display:grid; grid-template-columns:2fr 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr 1fr; font-size:9pt; border-top:1px solid #ddd; background:#fafafa;">
+          <div style="padding:1.5mm 2mm;">INFO-203 — Bases de données</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">12.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">13.5</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">14.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">15.5</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">13.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-weight:600;">13.60</div>
+          <div style="padding:1.5mm 2mm; text-align:center; color:#0a8c2a;">Admis</div>
+        </div>
+        <div style="display:grid; grid-template-columns:2fr 0.7fr 0.7fr 0.7fr 0.7fr 0.7fr 1fr 1fr; font-size:9pt; border-top:1px solid #ddd;">
+          <div style="padding:1.5mm 2mm;">MATH-202 — Maths pour l'ingénieur</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">8.5</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">9.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">10.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">11.0</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">9.5</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-weight:600;">9.60</div>
+          <div style="padding:1.5mm 2mm; text-align:center; color:#c00;">Non admis</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annot">
+    <table>
+      <thead><tr><th>Zone</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="zone">1 · Indicateurs synthétiques</td><td>Moyenne du semestre, ECTS validés, statut de validation. Calculés automatiquement à partir des notes.</td></tr>
+        <tr><td class="zone">2 · Tableau détaillé</td><td>Toutes les notes par évaluation, avec moyenne pondérée et verdict par cours.</td></tr>
+        <tr><td class="zone">+ Bouton « Relevé PDF »</td><td>Génère un document PDF officiel (FPDF côté serveur) imprimable et téléchargeable.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== WIREFRAME 7 : EMPLOI DU TEMPS ===================== -->
+<section class="wf-page">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="right">ING2 — Groupe 09 · SmartCampus<br><span style="color:#999">Wireframes</span></div>
+  </div>
+
+  <div class="wf-title">
+    <span class="num">7</span>
+    <h2>Emploi du temps</h2>
+  </div>
+  <p class="wf-purpose">
+    Vue hebdomadaire des créneaux de cours, du lundi au vendredi, de 8h à 18h. Disponible
+    pour les trois rôles avec un filtrage adapté (ses cours pour l'étudiant et l'enseignant,
+    tous les cours pour l'administrateur).
+  </p>
+
+  <div class="frame">
+    <div class="wf-topbar">
+      <div class="burger"></div><div class="brand">SmartCampus</div>
+      <div class="spacer"></div>
+      <div class="icon-bell"></div><div class="avatar"></div>
+    </div>
+    <div class="wf-sidebar">
+      <div class="item">▤ Tableau de bord</div>
+      <div class="item">📚 Mes cours</div>
+      <div class="item">📝 Notes</div>
+      <div class="item active">📅 Emploi du temps</div>
+    </div>
+    <div class="wf-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4mm;">
+        <div style="font-weight:700; font-size:13pt; color:#333;">Emploi du temps — semaine du 24 mai 2026</div>
+        <div>
+          <span class="wf-btn ghost" style="font-size:9pt;">‹ Semaine précédente</span>
+          <span class="wf-btn ghost" style="font-size:9pt;">Semaine suivante ›</span>
+        </div>
+      </div>
+
+      <div class="anchor" style="top:30mm; left:42mm;">1</div>
+      <div style="border:1px solid #888;">
+        <div style="display:grid; grid-template-columns:18mm repeat(5, 1fr); background:var(--ece); color:#fff; font-size:9pt; font-weight:600;">
+          <div style="padding:1.5mm 2mm;"></div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Lundi</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Mardi</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Mercredi</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Jeudi</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Vendredi</div>
+        </div>
+
+        <div class="anchor" style="top:50mm; left:42mm;">2</div>
+        <div style="display:grid; grid-template-columns:18mm repeat(5, 1fr); font-size:8.5pt; border-top:1px solid #ccc;">
+          <div style="padding:1.5mm 2mm; font-weight:600; color:#777;">08–10</div>
+          <div style="padding:1mm; background:#e0f3f3; border-left:3px solid var(--ece);">
+            <div style="font-weight:700;">INFO-201</div><div style="color:#666;">B201 · M. Ali</div>
+          </div>
+          <div style="padding:1mm; background:#fff4e0; border-left:3px solid #e69500;">
+            <div style="font-weight:700;">MATH-202</div><div style="color:#666;">B105 · Bensalem</div>
+          </div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm; background:#fce4ec; border-left:3px solid #c2185b;">
+            <div style="font-weight:700;">INFO-301</div><div style="color:#666;">Lab1 · Hamdi</div>
+          </div>
+          <div style="padding:1mm;"></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:18mm repeat(5, 1fr); font-size:8.5pt; border-top:1px solid #ccc;">
+          <div style="padding:1.5mm 2mm; font-weight:600; color:#777;">10–12</div>
+          <div style="padding:1mm; background:#e0f3f3; border-left:3px solid var(--ece);">
+            <div style="font-weight:700;">INFO-203</div><div style="color:#666;">B201 · Hamdi</div>
+          </div>
+          <div style="padding:1mm; background:#fff4e0; border-left:3px solid #e69500;">
+            <div style="font-weight:700;">PHYS-202</div><div style="color:#666;">A301 · Bourg</div>
+          </div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm;"></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:18mm repeat(5, 1fr); font-size:8.5pt; border-top:1px solid #ccc;">
+          <div style="padding:1.5mm 2mm; font-weight:600; color:#777;">14–16</div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm; background:#e0f3f3; border-left:3px solid var(--ece);">
+            <div style="font-weight:700;">INFO-201</div><div style="color:#666;">B201 · M. Ali (TD)</div>
+          </div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm; background:#e3f0ff; border-left:3px solid #1976d2;">
+            <div style="font-weight:700;">INFO-501</div><div style="color:#666;">Lab2 · Vidal</div>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:18mm repeat(5, 1fr); font-size:8.5pt; border-top:1px solid #ccc;">
+          <div style="padding:1.5mm 2mm; font-weight:600; color:#777;">16–18</div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm; background:#fce4ec; border-left:3px solid #c2185b;">
+            <div style="font-weight:700;">INFO-305</div><div style="color:#666;">Lab1 · Hamdi</div>
+          </div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm;"></div>
+          <div style="padding:1mm;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="annot">
+    <table>
+      <thead><tr><th>Zone</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="zone">1 · En-tête jours</td><td>Cinq jours visibles à la fois (semaine ouvrée). Navigation semaine précédente / suivante.</td></tr>
+        <tr><td class="zone">2 · Grille horaire</td><td>Une ligne par tranche de 2h, une colonne par jour. Chaque créneau est coloré par cours pour faciliter l'identification visuelle. Salle et enseignant lisibles d'un coup d'œil.</td></tr>
+        <tr><td class="zone">+ Mode admin</td><td>L'administrateur peut <em>cliquer sur une case vide</em> pour ajouter un créneau (formulaire modal). Les conflits de salle ou d'enseignant sont détectés côté serveur.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===================== WIREFRAME 8 : GESTION UTILISATEURS ===================== -->
+<section class="wf-page">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="right">ING2 — Groupe 09 · SmartCampus<br><span style="color:#999">Wireframes</span></div>
+  </div>
+
+  <div class="wf-title">
+    <span class="num">8</span>
+    <h2>Gestion des utilisateurs (administrateur)</h2>
+  </div>
+  <p class="wf-purpose">
+    Interface réservée à l'administrateur. Permet de <strong>lister, rechercher, créer,
+    activer / désactiver et supprimer</strong> les comptes étudiants et enseignants.
+  </p>
+
+  <div class="frame">
+    <div class="wf-topbar">
+      <div class="burger"></div><div class="brand">SmartCampus · Admin</div>
+      <div class="spacer"></div>
+      <div class="icon-bell"></div><div class="avatar"></div><span style="font-size:9pt;">admin ▾</span>
+    </div>
+    <div class="wf-sidebar">
+      <div class="item">▤ Tableau de bord</div>
+      <div class="item">🎓 Étudiants</div>
+      <div class="item">👨‍🏫 Enseignants</div>
+      <div class="item">📚 Cours</div>
+      <div class="item">📅 Emploi du temps</div>
+      <div class="item active">👥 Utilisateurs</div>
+      <div class="item">📊 Statistiques</div>
+    </div>
+    <div class="wf-content">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4mm;">
+        <div style="font-weight:700; font-size:13pt; color:#333;">Gestion des utilisateurs</div>
+        <span class="wf-btn" style="font-size:9pt;">+ Créer un utilisateur</span>
+      </div>
+
+      <div class="anchor" style="top:30mm; left:42mm;">1</div>
+      <div style="display:grid; grid-template-columns:3fr 1fr 1fr 1fr; gap:2mm; margin-bottom:4mm;">
+        <div class="wf-input">🔍 Rechercher par nom, e-mail, n° étudiant…</div>
+        <div class="wf-input">Rôle ▾</div>
+        <div class="wf-input">Statut ▾</div>
+        <div class="wf-input">Trier par ▾</div>
+      </div>
+
+      <div class="anchor" style="top:50mm; left:42mm;">2</div>
+      <div style="border:1px solid #888;">
+        <div style="display:grid; grid-template-columns:0.5fr 2fr 2.5fr 1fr 1fr 1.5fr; background:var(--ece); color:#fff; font-size:9pt; font-weight:600;">
+          <div style="padding:1.5mm 2mm;"></div>
+          <div style="padding:1.5mm 2mm;">Nom complet</div>
+          <div style="padding:1.5mm 2mm;">E-mail</div>
+          <div style="padding:1.5mm 2mm;">Rôle</div>
+          <div style="padding:1.5mm 2mm;">Statut</div>
+          <div style="padding:1.5mm 2mm; text-align:center;">Actions</div>
+        </div>
+        <div style="display:grid; grid-template-columns:0.5fr 2fr 2.5fr 1fr 1fr 1.5fr; font-size:9pt; border-top:1px solid #ddd;">
+          <div style="padding:1.5mm 2mm; text-align:center;"><div class="wf-img avatar" style="width:5mm;height:5mm; display:inline-block;"></div></div>
+          <div style="padding:1.5mm 2mm;">Emma Bernard</div>
+          <div style="padding:1.5mm 2mm; color:#666;">emma.b@etu.fr</div>
+          <div style="padding:1.5mm 2mm;"><span class="wf-tag">Étudiant</span></div>
+          <div style="padding:1.5mm 2mm; color:#0a8c2a;">● Actif</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-size:8.5pt;">✎ Modifier · ⏸ Désactiver · 🗑</div>
+        </div>
+        <div style="display:grid; grid-template-columns:0.5fr 2fr 2.5fr 1fr 1fr 1.5fr; font-size:9pt; border-top:1px solid #ddd; background:#fafafa;">
+          <div style="padding:1.5mm 2mm; text-align:center;"><div class="wf-img avatar" style="width:5mm;height:5mm; display:inline-block;"></div></div>
+          <div style="padding:1.5mm 2mm;">Karim Ali</div>
+          <div style="padding:1.5mm 2mm; color:#666;">k.ali@profs.fr</div>
+          <div style="padding:1.5mm 2mm;"><span class="wf-tag">Enseignant</span></div>
+          <div style="padding:1.5mm 2mm; color:#0a8c2a;">● Actif</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-size:8.5pt;">✎ Modifier · ⏸ Désactiver · 🗑</div>
+        </div>
+        <div style="display:grid; grid-template-columns:0.5fr 2fr 2.5fr 1fr 1fr 1.5fr; font-size:9pt; border-top:1px solid #ddd;">
+          <div style="padding:1.5mm 2mm; text-align:center;"><div class="wf-img avatar" style="width:5mm;height:5mm; display:inline-block;"></div></div>
+          <div style="padding:1.5mm 2mm;">Sara Hamdi</div>
+          <div style="padding:1.5mm 2mm; color:#666;">s.hamdi@profs.fr</div>
+          <div style="padding:1.5mm 2mm;"><span class="wf-tag">Enseignant</span></div>
+          <div style="padding:1.5mm 2mm; color:#c00;">● Inactif</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-size:8.5pt;">✎ Modifier · ▶ Réactiver · 🗑</div>
+        </div>
+        <div style="display:grid; grid-template-columns:0.5fr 2fr 2.5fr 1fr 1fr 1.5fr; font-size:9pt; border-top:1px solid #ddd; background:#fafafa;">
+          <div style="padding:1.5mm 2mm; text-align:center;"><div class="wf-img avatar" style="width:5mm;height:5mm; display:inline-block;"></div></div>
+          <div style="padding:1.5mm 2mm;">Lucas Martin</div>
+          <div style="padding:1.5mm 2mm; color:#666;">lucas.m@etu.fr</div>
+          <div style="padding:1.5mm 2mm;"><span class="wf-tag">Étudiant</span></div>
+          <div style="padding:1.5mm 2mm; color:#0a8c2a;">● Actif</div>
+          <div style="padding:1.5mm 2mm; text-align:center; font-size:8.5pt;">✎ Modifier · ⏸ Désactiver · 🗑</div>
+        </div>
+      </div>
+
+      <div class="anchor" style="top:115mm; left:42mm;">3</div>
+      <div style="text-align:center; margin-top:3mm; font-size:9pt; color:#777;">
+        45 utilisateurs · &lt; 1 · 2 · 3 · 4 &gt;
+      </div>
+    </div>
+  </div>
+
+  <div class="annot">
+    <table>
+      <thead><tr><th>Zone</th><th>Rôle</th></tr></thead>
+      <tbody>
+        <tr><td class="zone">1 · Recherche &amp; filtres</td><td>Recherche unifiée + filtres rôle / statut / tri. La requête est exécutée côté serveur (SQL avec requêtes préparées).</td></tr>
+        <tr><td class="zone">2 · Tableau des utilisateurs</td><td>Une ligne par compte avec rôle, statut visuel (point vert/rouge), et actions contextuelles. Les actions sensibles (suppression) demandent une confirmation modale.</td></tr>
+        <tr><td class="zone">3 · Pagination</td><td>Pagination serveur (20 par page). Permet de gérer une base d'utilisateurs importante sans dégrader les performances.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Spécifications fonctionnelles — SmartCampus</title>
+<style>
+  /* ====== Page setup ====== */
+  @page {
+    size: A4;
+    margin: 22mm 18mm 22mm 18mm;
+  }
+  @page :first { margin: 0; }
+
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+    font-size: 11pt;
+    line-height: 1.45;
+    color: #1a1a1a;
+  }
+
+  /* ====== Couleur ECE ====== */
+  :root { --ece: #00807F; --ece-soft: #E6F1F1; --ece-dark: #006666; }
+
+  /* ====== Titres ====== */
+  h1, h2, h3, h4 { color: var(--ece); font-weight: 700; }
+  h1 { font-size: 18pt; margin: 0 0 4mm 0; }
+  h2 { font-size: 14pt; margin: 6mm 0 3mm 0; page-break-after: avoid; }
+  h3 { font-size: 12pt; margin: 4mm 0 2mm 0; page-break-after: avoid; }
+  h4 { font-size: 11pt; margin: 3mm 0 1mm 0; }
+
+  p { margin: 0 0 2.5mm 0; text-align: justify; }
+  ul, ol { margin: 0 0 3mm 0; padding-left: 6mm; }
+  li { margin-bottom: 1mm; }
+
+  /* ====== Tableaux ====== */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2mm 0 4mm 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+  thead th {
+    background: var(--ece);
+    color: #fff;
+    text-align: left;
+    padding: 1.5mm 2mm;
+    font-weight: 600;
+  }
+  tbody td {
+    border: 0.3pt solid #c8c8c8;
+    padding: 1.5mm 2mm;
+    vertical-align: top;
+  }
+  tbody tr:nth-child(even) td { background: #fafafa; }
+
+  /* ====== Logo ECE ====== */
+  .ece-logo { display: inline-block; vertical-align: middle; }
+  .ece-logo img { display: block; }
+  .ece-logo.cover img { width: 32mm; height: 32mm; }
+  .ece-logo.small img { width: 14mm; height: 14mm; }
+
+  /* ====== En-tête courant (haut de chaque page) ====== */
+  .running-header {
+    position: running(header);
+    width: 100%;
+    color: #4a4a4a;
+    font-size: 9pt;
+  }
+
+  /* ====== PAGE DE GARDE (layout absolu) ====== */
+  .cover {
+    height: 297mm;
+    width: 210mm;
+    box-sizing: border-box;
+    page-break-after: always;
+    position: relative;
+    overflow: hidden;
+  }
+  .cv-logo { position: absolute; top: 18mm; left: 18mm; }
+  .cv-logo img { width: 32mm; height: 32mm; display: block; }
+  .cv-ing {
+    position: absolute; top: 18mm; right: 18mm;
+    color: #4a4a4a; font-size: 10pt; text-align: right;
+  }
+  .cv-title {
+    position: absolute;
+    top: 80mm; left: 18mm; right: 18mm;
+    padding: 6mm 4mm;
+    border-top: 1.2pt solid var(--ece);
+    border-bottom: 1.2pt solid var(--ece);
+    text-align: center;
+  }
+  .cv-title .doc-type {
+    color: var(--ece); font-size: 22pt; font-weight: 800;
+    letter-spacing: 0.5pt; margin-bottom: 3mm;
+  }
+  .cv-title .doc-subtitle {
+    color: var(--ece); font-size: 14pt; font-style: italic; font-weight: 500;
+  }
+  .cv-meta {
+    position: absolute;
+    top: 130mm; left: 18mm; right: 18mm;
+    font-size: 11pt;
+  }
+  .cv-meta .authors { float: left; width: 50%; }
+  .cv-meta .teacher { float: right; width: 45%; }
+  .cv-meta .label { font-style: italic; color: #4a4a4a; margin-bottom: 3mm; }
+  .cv-meta .name { margin-bottom: 1.5mm; }
+  .cv-meta .name .first { display: inline-block; min-width: 30mm; }
+  .cv-meta::after { content: ""; display: block; clear: both; }
+  .cv-summary {
+    position: absolute;
+    top: 175mm; left: 18mm; right: 18mm;
+    background: #f1f1f1;
+    padding: 6mm;
+    border-radius: 1mm;
+    font-size: 10.5pt;
+    line-height: 1.5;
+  }
+  .cv-summary strong { color: var(--ece-dark); }
+  .cv-footer {
+    position: absolute;
+    bottom: 18mm; left: 18mm; right: 18mm;
+    border-top: 0.4pt solid #c8c8c8;
+    padding-top: 4mm;
+    font-size: 9.5pt;
+    color: #4a4a4a;
+  }
+  .cv-footer .attest { float: left; width: 60%; }
+  .cv-footer .place { float: right; width: 35%; text-align: right; }
+  .cv-footer::after { content: ""; display: block; clear: both; }
+
+  /* ====== Sommaire ====== */
+  .toc { page-break-after: always; }
+  .toc h1 { color: var(--ece); margin-bottom: 8mm; }
+  .toc ol { list-style: none; padding: 0; margin: 0; }
+  .toc > ol > li { margin: 2mm 0; font-weight: 600; color: var(--ece); }
+  .toc ol ol { padding-left: 8mm; }
+  .toc ol ol li { font-weight: 400; color: #1a1a1a; margin: 1mm 0; }
+  .toc .dots { color: #c8c8c8; }
+  .toc .pn { color: #4a4a4a; }
+
+  /* ====== Page running header (depuis sommaire) ====== */
+  .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.4pt solid #d0d0d0;
+    padding-bottom: 2mm;
+    margin-bottom: 6mm;
+  }
+
+  /* ====== Encarts ====== */
+  .callout {
+    background: var(--ece-soft);
+    border-left: 2pt solid var(--ece);
+    padding: 3mm 4mm;
+    margin: 3mm 0;
+    font-size: 10.5pt;
+  }
+  .small { font-size: 9.5pt; color: #4a4a4a; }
+  code, .mono {
+    font-family: "Consolas", "Courier New", monospace;
+    background: #f4f4f4;
+    padding: 0 1mm;
+    border-radius: 1mm;
+    font-size: 9.5pt;
+  }
+  hr { border: 0; border-top: 0.4pt solid #d0d0d0; margin: 6mm 0; }
+
+  .section { page-break-before: always; }
+  .no-break { page-break-inside: avoid; }
+  .roman { font-variant: small-caps; }
+</style>
+</head>
+<body>
+
+<!-- =================== PAGE DE GARDE =================== -->
+<section class="cover">
+
+  <div class="cv-logo"><img src="assets/ece-logo.jpg" alt="Logo ECE"></div>
+  <div class="cv-ing">ING2 — Groupe 09</div>
+
+  <div class="cv-title">
+    <div class="doc-type">DOCUMENT DE SPÉCIFICATIONS FONCTIONNELLES</div>
+    <div class="doc-subtitle">Projet Web Dynamique 2026 — Sujet 2 : SmartCampus</div>
+  </div>
+
+  <div class="cv-meta">
+    <div class="authors">
+      <div class="label">Auteurs :</div>
+      <div class="name"><span class="first">Viktor</span>GOUSSOT</div>
+      <div class="name"><span class="first">Nicolas</span>CARMINATI</div>
+      <div class="name"><span class="first">Alexis</span>OSORIO</div>
+      <div class="name"><span class="first">Louis</span>PEZE</div>
+    </div>
+    <div class="teacher">
+      <div class="label">Enseignant :</div>
+      <div class="name">M. HINA</div>
+    </div>
+  </div>
+
+  <div class="cv-summary">
+    <strong>RÉSUMÉ —</strong> SmartCampus est une plateforme web dynamique de gestion
+    académique destinée à une école d'ingénieurs. Elle centralise les interactions entre
+    l'administration, les enseignants et les étudiants autour des cours, des inscriptions,
+    des notes et des emplois du temps. Trois rôles utilisateurs (administrateur,
+    enseignant, étudiant) accèdent à des fonctionnalités cloisonnées par un contrôle
+    d'accès serveur (RBAC). Le projet répond au sujet « Projet Web dynamique 2026 — Sujet 2 »
+    en respectant les contraintes imposées : base de données relationnelle (MySQL),
+    backend PHP organisé en API REST, frontend HTML/CSS/JavaScript avec Bootstrap, et la
+    mise en œuvre de plusieurs règles métier réalistes (capacité, prérequis, conflits
+    d'emploi du temps, verrouillage des notes). Ce document présente les rôles
+    utilisateurs, les fonctionnalités principales, les contraintes techniques, les
+    technologies envisagées et la répartition prévisionnelle du travail entre les
+    membres de l'équipe.
+  </div>
+
+  <div class="cv-footer">
+    <div class="attest">
+      Nous attestons que ce travail est original, qu'il est le fruit d'un travail commun à
+      l'équipe et qu'il a été rédigé de manière autonome.
+    </div>
+    <div class="place">Paris, le 28/05/2026</div>
+  </div>
+
+</section>
+
+<!-- =================== SOMMAIRE =================== -->
+<section class="toc">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h1>Table des matières</h1>
+  <ol>
+    <li>I. &nbsp; Objectif du document <span class="dots"> ............................................................................ </span> <span class="pn">3</span>
+      <ol></ol>
+    </li>
+    <li>II. &nbsp; Glossaire <span class="dots"> .............................................................................................. </span> <span class="pn">3</span>
+      <ol>
+        <li>A. Termes <span class="dots"> ...................................................................................... </span> <span class="pn">3</span></li>
+        <li>B. Acronymes <span class="dots"> ................................................................................. </span> <span class="pn">3</span></li>
+      </ol>
+    </li>
+    <li>III. &nbsp; L'équipe <span class="dots"> ................................................................................................. </span> <span class="pn">4</span>
+      <ol>
+        <li>A. Présentation de l'équipe <span class="dots"> ............................................................. </span> <span class="pn">4</span></li>
+        <li>B. Organisation de l'équipe <span class="dots"> ............................................................ </span> <span class="pn">4</span></li>
+        <li>C. Répartition prévisionnelle du travail <span class="dots"> ............................................ </span> <span class="pn">4</span></li>
+      </ol>
+    </li>
+    <li>IV. &nbsp; Contexte et problématique <span class="dots"> ............................................................. </span> <span class="pn">5</span>
+      <ol>
+        <li>A. Contexte <span class="dots"> ..................................................................................... </span> <span class="pn">5</span></li>
+        <li>B. Problématique <span class="dots"> ............................................................................. </span> <span class="pn">5</span></li>
+        <li>C. Public cible <span class="dots"> ................................................................................. </span> <span class="pn">5</span></li>
+      </ol>
+    </li>
+    <li>V. &nbsp; Rôles utilisateurs <span class="dots"> ........................................................................... </span> <span class="pn">6</span>
+      <ol>
+        <li>A. Visiteur <span class="dots"> ........................................................................................ </span> <span class="pn">6</span></li>
+        <li>B. Étudiant <span class="dots"> ...................................................................................... </span> <span class="pn">6</span></li>
+        <li>C. Enseignant <span class="dots"> ................................................................................. </span> <span class="pn">6</span></li>
+        <li>D. Administrateur <span class="dots"> ............................................................................ </span> <span class="pn">6</span></li>
+      </ol>
+    </li>
+    <li>VI. &nbsp; Principales fonctionnalités <span class="dots"> ............................................................. </span> <span class="pn">7</span>
+      <ol>
+        <li>A. Tableau récapitulatif <span class="dots"> ................................................................... </span> <span class="pn">7</span></li>
+        <li>B. Règles métier <span class="dots"> ............................................................................. </span> <span class="pn">7</span></li>
+        <li>C. Cas d'utilisation principal <span class="dots"> ........................................................... </span> <span class="pn">8</span></li>
+      </ol>
+    </li>
+    <li>VII. &nbsp; Contraintes techniques et technologies envisagées <span class="dots"> ................... </span> <span class="pn">9</span>
+      <ol>
+        <li>A. Contraintes techniques imposées <span class="dots"> ........................................... </span> <span class="pn">9</span></li>
+        <li>B. Technologies retenues <span class="dots"> ............................................................. </span> <span class="pn">9</span></li>
+        <li>C. Architecture envisagée <span class="dots"> ............................................................. </span> <span class="pn">10</span></li>
+      </ol>
+    </li>
+    <li>VIII. &nbsp; Interfaces attendues <span class="dots"> .................................................................... </span> <span class="pn">11</span></li>
+    <li>IX. &nbsp; Critères de validation <span class="dots"> .................................................................. </span> <span class="pn">11</span></li>
+    <li>X. &nbsp; Bibliographie <span class="dots"> ......................................................................................... </span> <span class="pn">12</span></li>
+  </ol>
+</section>
+
+<!-- =================== I. OBJECTIF =================== -->
+<section class="section">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h2>I. Objectif du document</h2>
+  <p>
+    Ce document présente les <strong>spécifications fonctionnelles</strong> du projet
+    SmartCampus, plateforme web dynamique de gestion académique développée dans le
+    cadre du module « Projet Web dynamique 2026 — Sujet 2 ». Il s'adresse aux
+    encadrants pédagogiques et constitue la première livraison du projet (livrable
+    conception, dû le <strong>28 mai 2026</strong>).
+  </p>
+  <p>Le lecteur y trouvera :</p>
+  <ul>
+    <li>la description des <strong>rôles utilisateurs</strong> et de leurs permissions ;</li>
+    <li>les <strong>fonctionnalités principales</strong> envisagées (cœur du sujet et bonus) ;</li>
+    <li>les <strong>règles métier</strong> qui sécurisent les inscriptions, les notes et l'emploi du temps ;</li>
+    <li>les <strong>contraintes techniques</strong> imposées par le sujet et les <strong>technologies retenues</strong> ;</li>
+    <li>une <strong>première répartition prévisionnelle du travail</strong> entre les membres de l'équipe.</li>
+  </ul>
+
+  <h2>II. Glossaire</h2>
+
+  <h3>A. Termes</h3>
+  <table class="no-break">
+    <thead><tr><th style="width:32%">Terme</th><th>Définition</th></tr></thead>
+    <tbody>
+      <tr><td>Filière</td><td>Spécialité d'études choisie par l'étudiant (informatique, mécanique, énergie, etc.).</td></tr>
+      <tr><td>Niveau</td><td>Année académique : L1, L2, L3 (licence) puis M1, M2 (master).</td></tr>
+      <tr><td>Semestre</td><td>Période d'enseignement (S1 à S10), associée à un niveau.</td></tr>
+      <tr><td>Groupe de TD</td><td>Sous-groupe d'étudiants pour les travaux dirigés.</td></tr>
+      <tr><td>Prérequis</td><td>Cours qu'un étudiant doit avoir validé (moyenne ≥ 10) pour s'inscrire à un autre cours.</td></tr>
+      <tr><td>Verrouillage d'une note</td><td>Action de l'enseignant rendant une note définitive et non modifiable.</td></tr>
+      <tr><td>Règle métier</td><td>Contrainte applicative qui traduit une règle de gestion réelle (ex. capacité d'un cours).</td></tr>
+      <tr><td>Catalogue</td><td>Vue d'ensemble des cours proposés, filtrable par niveau, semestre, département.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>B. Acronymes</h3>
+  <table class="no-break">
+    <thead><tr><th style="width:18%">Acronyme</th><th style="width:30%">Signification</th><th>Explication</th></tr></thead>
+    <tbody>
+      <tr><td>API</td><td>Application Programming Interface</td><td>Interface permettant au frontend de dialoguer avec le serveur via HTTP/JSON.</td></tr>
+      <tr><td>REST</td><td>Representational State Transfer</td><td>Style d'architecture d'API basé sur les méthodes HTTP (GET, POST, PUT, DELETE).</td></tr>
+      <tr><td>SPA</td><td>Single Page Application</td><td>Application web rendue côté client à partir d'une seule page HTML.</td></tr>
+      <tr><td>MVC</td><td>Modèle – Vue – Contrôleur</td><td>Patron d'architecture séparant données, affichage et logique.</td></tr>
+      <tr><td>RBAC</td><td>Role-Based Access Control</td><td>Contrôle d'accès fondé sur les rôles utilisateurs.</td></tr>
+      <tr><td>CSRF</td><td>Cross-Site Request Forgery</td><td>Attaque par requête forgée ; contrée par un jeton secret par session.</td></tr>
+      <tr><td>PDO</td><td>PHP Data Objects</td><td>Couche d'abstraction de PHP pour accéder aux bases de données (requêtes préparées).</td></tr>
+      <tr><td>ECTS</td><td>European Credits Transfer System</td><td>Système européen de crédits universitaires.</td></tr>
+      <tr><td>CRUD</td><td>Create, Read, Update, Delete</td><td>Les quatre opérations de base sur une ressource.</td></tr>
+      <tr><td>MCD</td><td>Modèle Conceptuel de Données</td><td>Représentation abstraite des entités et associations du domaine.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- =================== III. L'EQUIPE =================== -->
+<section class="section">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h2>III. L'équipe</h2>
+
+  <h3>A. Présentation de l'équipe</h3>
+  <table>
+    <thead><tr><th>#</th><th>Nom / Prénom</th><th>Compétences principales</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Viktor GOUSSOT</td><td>Chef de projet — Backend (PHP, sécurité, architecture API)</td></tr>
+      <tr><td>2</td><td>Nicolas CARMINATI</td><td>Backend (règles métier, base de données, requêtes SQL)</td></tr>
+      <tr><td>3</td><td>Alexis OSORIO</td><td>Frontend (HTML/CSS, Bootstrap, ergonomie, intégration)</td></tr>
+      <tr><td>4</td><td>Louis PEZE</td><td>Frontend (JavaScript, dashboards, tests)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>B. Organisation de l'équipe</h3>
+  <ul>
+    <li><strong>Versioning</strong> : dépôt Git/GitHub partagé, commits réguliers et nommés
+      avec préfixes (<span class="mono">feat:</span>, <span class="mono">fix:</span>,
+      <span class="mono">docs:</span>…). Branches par fonctionnalité fusionnées sur
+      <span class="mono">main</span> par <em>pull request</em> après relecture croisée.</li>
+    <li><strong>Communication</strong> : points d'avancement hebdomadaires ; chaque
+      membre doit pouvoir expliquer le code des autres (objectif pédagogique du module).</li>
+    <li><strong>Méthode</strong> : approche itérative — d'abord le squelette
+      (authentification, base de données, routes CRUD), puis les règles métier, puis les
+      écrans, puis les bonus (PDF, messagerie, statistiques).</li>
+  </ul>
+
+  <h3>C. Répartition prévisionnelle du travail</h3>
+  <table>
+    <thead><tr><th>Module / Tâche</th><th style="width:30%">Responsable</th><th style="width:25%">Contributeurs</th></tr></thead>
+    <tbody>
+      <tr><td>Modèle de données (MCD, schéma SQL)</td><td>Nicolas CARMINATI</td><td>Viktor GOUSSOT</td></tr>
+      <tr><td>Noyau backend (Router, Auth, sécurité)</td><td>Viktor GOUSSOT</td><td>—</td></tr>
+      <tr><td>Règles métier (inscriptions, notes, conflits)</td><td>Nicolas CARMINATI</td><td>Viktor GOUSSOT</td></tr>
+      <tr><td>API CRUD (étudiants, enseignants, cours)</td><td>Viktor GOUSSOT</td><td>Nicolas CARMINATI</td></tr>
+      <tr><td>Authentification &amp; gestion de session</td><td>Viktor GOUSSOT</td><td>—</td></tr>
+      <tr><td>Frontend — noyau (routeur, UI, services)</td><td>Alexis OSORIO</td><td>Louis PEZE</td></tr>
+      <tr><td>Frontend — pages de gestion (CRUD)</td><td>Alexis OSORIO</td><td>—</td></tr>
+      <tr><td>Frontend — espace étudiant (notes, inscriptions)</td><td>Louis PEZE</td><td>Alexis OSORIO</td></tr>
+      <tr><td>Tableaux de bord par rôle</td><td>Louis PEZE</td><td>—</td></tr>
+      <tr><td>Emploi du temps (UI + API)</td><td>Louis PEZE</td><td>Nicolas CARMINATI</td></tr>
+      <tr><td>Bonus — relevé PDF (FPDF)</td><td>Nicolas CARMINATI</td><td>—</td></tr>
+      <tr><td>Bonus — messagerie &amp; notifications</td><td>Alexis OSORIO</td><td>Louis PEZE</td></tr>
+      <tr><td>Bonus — statistiques (Chart.js)</td><td>Louis PEZE</td><td>—</td></tr>
+      <tr><td>Documentation &amp; rapport</td><td>Tous</td><td>—</td></tr>
+      <tr><td>Tests &amp; démonstration</td><td>Louis PEZE</td><td>Tous</td></tr>
+    </tbody>
+  </table>
+  <p class="small">
+    Cette répartition est <em>prévisionnelle</em> : elle sera ajustée en cours de projet
+    selon l'avancement et la charge réelle, et la version définitive sera présentée
+    lors de la soutenance avec les commits Git à l'appui.
+  </p>
+</section>
+
+<!-- =================== IV. CONTEXTE =================== -->
+<section class="section">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h2>IV. Contexte et problématique</h2>
+
+  <h3>A. Contexte</h3>
+  <p>
+    Les établissements d'enseignement supérieur gèrent un volume croissant d'informations
+    académiques : inscriptions aux cours, suivi des notes, planification des cours, mais
+    aussi communication entre l'administration, les enseignants et les étudiants. Ces
+    informations sont aujourd'hui souvent dispersées entre plusieurs outils (intranet,
+    tableurs, courriels), ce qui complique le suivi pédagogique et la prise de décision.
+  </p>
+  <p>
+    Le présent projet s'inscrit dans le module « Projet Web dynamique 2026 » de l'ECE.
+    Le sujet n° 2 demande la conception d'une plateforme web dynamique de gestion
+    académique. Nous avons choisi comme contexte une <strong>école d'ingénieurs</strong>
+    (organisation en filières, niveaux L1 → M2, semestres, crédits ECTS, groupes de TD).
+  </p>
+
+  <h3>B. Problématique</h3>
+  <p>
+    <em>Comment concevoir une plateforme web unique, ergonomique et sécurisée, qui
+    centralise la gestion académique d'une école d'ingénieurs en garantissant à chaque
+    rôle utilisateur un accès strictement délimité à ses fonctionnalités, tout en
+    appliquant des règles métier réalistes (capacité, prérequis, conflits horaires,
+    verrouillage des notes) ?</em>
+  </p>
+  <p>
+    Cette problématique se décline en plusieurs sous-questions :
+  </p>
+  <ul>
+    <li>Quel modèle de données permet de représenter à la fois les étudiants, les
+      enseignants, les cours, les inscriptions, les notes et l'emploi du temps sans
+      duplication d'information ?</li>
+    <li>Comment cloisonner les droits de chaque rôle sans dépendre uniquement de
+      l'interface graphique (sécurité côté serveur) ?</li>
+    <li>Comment garantir la cohérence des données face à des actions concurrentes
+      (deux étudiants qui s'inscrivent en même temps à la dernière place d'un cours,
+      par exemple) ?</li>
+  </ul>
+
+  <h3>C. Public cible</h3>
+  <table class="no-break">
+    <thead><tr><th style="width:25%">Public</th><th>Besoin principal</th></tr></thead>
+    <tbody>
+      <tr><td>Étudiants</td><td>Consulter rapidement leurs cours, leurs notes et leur emploi du temps ; s'inscrire ou se désinscrire d'un cours ; télécharger un relevé de notes.</td></tr>
+      <tr><td>Enseignants</td><td>Voir les étudiants inscrits à leurs cours, saisir et valider les notes, consulter leur emploi du temps.</td></tr>
+      <tr><td>Administration pédagogique</td><td>Gérer le référentiel (étudiants, enseignants, cours), planifier l'emploi du temps, suivre la réussite via des statistiques.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- =================== V. ROLES =================== -->
+<section class="section">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h2>V. Rôles utilisateurs</h2>
+  <p>
+    La plateforme distingue quatre rôles. Le cloisonnement est <strong>imposé côté
+    serveur</strong> (RBAC) — il ne dépend pas seulement de l'interface affichée.
+  </p>
+
+  <h3>A. Visiteur</h3>
+  <ul>
+    <li>Consulter la page d'accueil et de connexion.</li>
+    <li>Créer un compte étudiant (inscription publique).</li>
+    <li>Aucun accès aux données académiques.</li>
+  </ul>
+
+  <h3>B. Étudiant</h3>
+  <ul>
+    <li>Consulter le catalogue des cours et s'<strong>inscrire / se désinscrire</strong>
+      (sous réserve des règles métier).</li>
+    <li>Consulter ses propres <strong>notes</strong> et calculs de moyenne, télécharger
+      un <strong>relevé PDF</strong>.</li>
+    <li>Consulter son <strong>emploi du temps</strong> hebdomadaire.</li>
+    <li>Utiliser la <strong>messagerie interne</strong> avec ses enseignants.</li>
+    <li>Recevoir des <strong>notifications</strong> (note publiée, inscription validée…).</li>
+  </ul>
+
+  <h3>C. Enseignant</h3>
+  <ul>
+    <li>Consulter la liste de <strong>ses</strong> cours et des étudiants inscrits.</li>
+    <li><strong>Saisir, modifier et valider</strong> les notes (chaque note peut être
+      verrouillée — elle devient alors définitive).</li>
+    <li>Consulter son emploi du temps.</li>
+    <li>Échanger des messages avec ses étudiants.</li>
+    <li><em>Restriction</em> : un enseignant ne peut noter que les étudiants des cours
+      qu'il encadre.</li>
+  </ul>
+
+  <h3>D. Administrateur</h3>
+  <ul>
+    <li>Gérer le référentiel : <strong>étudiants, enseignants, cours, créneaux</strong>
+      (CRUD complet).</li>
+    <li><strong>Modérer</strong> les utilisateurs (activer / désactiver / supprimer).</li>
+    <li>Inscrire ou désinscrire un étudiant d'un cours en cas de besoin administratif.</li>
+    <li>Consulter des <strong>statistiques</strong> de réussite et de répartition.</li>
+    <li>Aucune restriction de visibilité (vue globale).</li>
+  </ul>
+
+</section>
+
+<!-- =================== VI. FONCTIONNALITES =================== -->
+<section class="section">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h2>VI. Principales fonctionnalités</h2>
+
+  <h3>A. Tableau récapitulatif</h3>
+  <table>
+    <thead><tr><th style="width:8%">ID</th><th style="width:25%">Fonctionnalité</th><th>Description</th><th style="width:18%">Rôles</th></tr></thead>
+    <tbody>
+      <tr><td>F01</td><td>Authentification</td><td>Connexion / déconnexion / inscription, sessions sécurisées.</td><td>Tous</td></tr>
+      <tr><td>F02</td><td>Gestion des utilisateurs</td><td>Création de comptes, gestion des rôles, modération (activer / désactiver / supprimer).</td><td>Admin</td></tr>
+      <tr><td>F03</td><td>Gestion des étudiants</td><td>CRUD étudiant, profil, parcours académique, recherche / filtre / tri.</td><td>Admin, Enseignant (lecture)</td></tr>
+      <tr><td>F04</td><td>Gestion des enseignants</td><td>CRUD enseignant, association aux cours.</td><td>Admin</td></tr>
+      <tr><td>F05</td><td>Gestion des cours</td><td>CRUD cours, affectation enseignant, archivage, filtres / tri.</td><td>Admin</td></tr>
+      <tr><td>F06</td><td>Inscriptions aux cours</td><td>Inscription / désinscription, listes des inscrits.</td><td>Étudiant, Admin</td></tr>
+      <tr><td>F07</td><td>Gestion des notes</td><td>Saisie, modification, calcul de moyenne, validation finale (verrouillage).</td><td>Enseignant, Admin</td></tr>
+      <tr><td>F08</td><td>Emploi du temps</td><td>Création de créneaux, consultation hebdomadaire selon le rôle.</td><td>Admin (gestion), tous (lecture)</td></tr>
+      <tr><td>F09</td><td>Tableaux de bord</td><td>Vue synthétique adaptée au rôle (statistiques, prochaines séances, notes récentes).</td><td>Tous</td></tr>
+      <tr><td>F10</td><td>Relevé de notes PDF <em>(bonus)</em></td><td>Génération PDF du relevé d'un étudiant.</td><td>Étudiant, Admin, Enseignant</td></tr>
+      <tr><td>F11</td><td>Messagerie interne <em>(bonus)</em></td><td>Échange de messages entre utilisateurs selon les rôles.</td><td>Tous</td></tr>
+      <tr><td>F12</td><td>Notifications <em>(bonus)</em></td><td>Alertes : note publiée, inscription, validation, message reçu.</td><td>Tous</td></tr>
+      <tr><td>F13</td><td>Statistiques <em>(bonus)</em></td><td>Graphiques académiques (réussite, répartitions par filière / niveau).</td><td>Admin</td></tr>
+    </tbody>
+  </table>
+
+  <h3>B. Règles métier</h3>
+  <p>
+    Le sujet exige plusieurs règles métier réalistes. <strong>Six</strong> règles sont
+    prévues, toutes vérifiées <strong>côté serveur</strong> :
+  </p>
+  <ol>
+    <li><strong>Pas de double inscription</strong> — un étudiant ne peut s'inscrire deux fois au même cours.</li>
+    <li><strong>Contrôle de capacité</strong> — l'inscription est refusée si la capacité maximale du cours est atteinte.</li>
+    <li><strong>Prérequis académiques</strong> — l'inscription à un cours exige d'avoir validé (moyenne ≥ 10) les cours prérequis.</li>
+    <li><strong>Détection des conflits d'emploi du temps</strong> — un étudiant ne peut suivre deux cours qui se chevauchent ; deux créneaux ne peuvent pas être placés dans la même salle ou pour le même enseignant au même moment.</li>
+    <li><strong>Verrouillage des notes après validation</strong> — une note validée devient non modifiable et non supprimable.</li>
+    <li><strong>Restriction des actions selon les rôles</strong> — chaque action sensible vérifie le rôle et, pour l'enseignant, la propriété du cours.</li>
+  </ol>
+
+  <h3>C. Cas d'utilisation principal — « S'inscrire à un cours »</h3>
+  <ul>
+    <li><strong>Acteur principal</strong> : étudiant connecté.</li>
+    <li><strong>Préconditions</strong> : l'étudiant est authentifié ; le cours existe et n'est pas archivé.</li>
+    <li><strong>Scénario nominal</strong> :
+      <ol>
+        <li>L'étudiant recherche / filtre un cours dans le catalogue.</li>
+        <li>Il clique sur « S'inscrire ».</li>
+        <li>Le serveur vérifie successivement : double inscription, capacité, prérequis, conflit d'emploi du temps.</li>
+        <li>Si toutes les règles passent, l'inscription est enregistrée et une notification est créée.</li>
+      </ol>
+    </li>
+    <li><strong>Scénarios alternatifs</strong> : à chaque règle non respectée, l'inscription est refusée avec un message explicite
+      (ex. « Ce cours est complet », « Prérequis non validés : INFO-203 », « Conflit d'emploi du temps avec MATH-202 »).</li>
+  </ul>
+</section>
+
+<!-- =================== VII. CONTRAINTES & TECHNOS =================== -->
+<section class="section">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h2>VII. Contraintes techniques et technologies envisagées</h2>
+
+  <h3>A. Contraintes techniques imposées par le sujet</h3>
+  <ul>
+    <li>Base de données <strong>relationnelle</strong> (MySQL ou équivalent).</li>
+    <li>Backend en <strong>PHP</strong> organisé en API REST, séparé du frontend.</li>
+    <li>Frontend en <strong>HTML / CSS / JavaScript</strong>, avec Bootstrap pour la mise en forme.</li>
+    <li>Validation des entrées <strong>côté client ET côté serveur</strong>.</li>
+    <li>Sécurité : sessions, jeton anti-CSRF, contrôle d'accès par rôle, requêtes
+      <strong>préparées</strong> (anti-injection SQL), <strong>hashage</strong> des mots
+      de passe.</li>
+    <li>Interface <strong>responsive</strong> (testée mobile et desktop).</li>
+    <li>Pas de framework lourd type Laravel ou Symfony (architecture maîtrisée, expliquable).</li>
+  </ul>
+
+  <h3>B. Technologies retenues</h3>
+  <table>
+    <thead><tr><th style="width:22%">Couche</th><th style="width:30%">Technologie</th><th>Justification</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Base de données</td>
+        <td>MySQL 8 (moteur InnoDB)</td>
+        <td>Imposé par le sujet. InnoDB pour les clés étrangères et les transactions (cohérence lors des actions multi-tables).</td>
+      </tr>
+      <tr>
+        <td>Backend</td>
+        <td>PHP 8 (sans framework, mini-MVC maison)</td>
+        <td>Imposé par le sujet. Un mini-noyau (≈ 6 classes) rend chaque mécanisme explicable en soutenance.</td>
+      </tr>
+      <tr>
+        <td>Accès BDD</td>
+        <td>PDO (requêtes préparées)</td>
+        <td>Standard PHP ; protège contre les injections SQL.</td>
+      </tr>
+      <tr>
+        <td>Frontend</td>
+        <td>HTML5, CSS3, JavaScript ES modules</td>
+        <td>Sans build (pas de Webpack / Vite) : modules ES natifs chargés dynamiquement.</td>
+      </tr>
+      <tr>
+        <td>UI</td>
+        <td>Bootstrap 5 + Bootstrap Icons</td>
+        <td>Imposé par le sujet ; accélère la mise en forme et garantit le responsive.</td>
+      </tr>
+      <tr>
+        <td>Graphiques</td>
+        <td>Chart.js</td>
+        <td>Léger, simple, sans dépendance ; suffisant pour les statistiques de l'admin.</td>
+      </tr>
+      <tr>
+        <td>Génération PDF</td>
+        <td>FPDF (PHP)</td>
+        <td>Bibliothèque éprouvée pour produire des relevés de notes côté serveur.</td>
+      </tr>
+      <tr>
+        <td>Serveur de dev</td>
+        <td>WAMP (Apache + PHP + MySQL) sous Windows</td>
+        <td>Environnement local standard pour les projets PHP à l'école.</td>
+      </tr>
+      <tr>
+        <td>Versioning</td>
+        <td>Git + GitHub</td>
+        <td>Suivi des contributions, branches par fonctionnalité, relecture croisée.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>C. Architecture envisagée</h3>
+  <p>
+    Architecture <strong>client – serveur</strong> avec séparation nette frontend /
+    backend. Le frontend (Single Page Application) appelle l'API REST en JSON ;
+    l'API authentifie, vérifie les droits (RBAC) et applique les règles métier avant
+    d'écrire en base.
+  </p>
+  <pre style="font-family:Consolas,monospace; font-size:9pt; background:#f7f7f7; padding:3mm; border-left:2pt solid var(--ece); white-space:pre-wrap;">
++-----------------------------+           +-----------------------------+
+|     NAVIGATEUR (Client)     |  HTTP/JSON|     SERVEUR APACHE + PHP    |
+|  index.html  (SPA Bootstrap)|<--------->|   index.php (Front Ctrl)    |
+|  modules JS : router, api,  |  cookies  |   Router → Controllers      |
+|  store, ui, pages/*         |  session  |   Auth · Validator · RBAC   |
+|                             |           |   core/Academic (règles)    |
++-----------------------------+           +-------------+---------------+
+                                                        |
+                                                        | PDO (SQL préparé)
+                                                        v
+                                                +-------+--------+
+                                                |  MySQL 8       |
+                                                |  (InnoDB)      |
+                                                +----------------+
+  </pre>
+</section>
+
+<!-- =================== VIII. INTERFACES =================== -->
+<section class="section">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h2>VIII. Interfaces attendues</h2>
+  <table>
+    <thead><tr><th style="width:30%">Page</th><th>Contenu</th></tr></thead>
+    <tbody>
+      <tr><td>Connexion / Inscription</td><td>Formulaires d'authentification (e-mail + mot de passe).</td></tr>
+      <tr><td>Tableau de bord</td><td>Synthèse adaptée au rôle : statistiques, prochaines séances, notes récentes.</td></tr>
+      <tr><td>Étudiants / Enseignants</td><td>Listes filtrables + formulaires CRUD en modale.</td></tr>
+      <tr><td>Catalogue des cours</td><td>Cartes filtrables / triables, inscription, gestion.</td></tr>
+      <tr><td>Détail d'un cours</td><td>Informations, créneaux, grille de notes (enseignant), inscription (étudiant).</td></tr>
+      <tr><td>Mes notes</td><td>Notes par cours, moyennes, résultat, téléchargement du relevé PDF.</td></tr>
+      <tr><td>Emploi du temps</td><td>Vue hebdomadaire lundi → vendredi.</td></tr>
+      <tr><td>Messagerie</td><td>Boîtes reçue / envoyée + composition.</td></tr>
+      <tr><td>Statistiques</td><td>Graphiques (Chart.js) — réservé à l'administrateur.</td></tr>
+      <tr><td>Utilisateurs</td><td>Modération des comptes — réservé à l'administrateur.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>IX. Critères de validation</h2>
+  <p>Les critères de validation correspondent aux exigences du sujet :</p>
+  <ul>
+    <li>Inscription et authentification fonctionnelles.</li>
+    <li>Processus d'inscription aux cours complet, avec règles métier.</li>
+    <li>Ajout / retrait de cours et de données académiques par l'administration.</li>
+    <li>Modération de la plateforme par l'administrateur.</li>
+    <li>Interface claire, ergonomique et responsive.</li>
+    <li>Calcul automatique des moyennes et détermination du résultat (admis / non admis).</li>
+    <li>Sécurité : sessions, CSRF, RBAC, requêtes préparées, hashage des mots de passe.</li>
+  </ul>
+</section>
+
+<!-- =================== X. BIBLIOGRAPHIE =================== -->
+<section class="section">
+  <div class="page-header">
+    <div class="ece-logo small">
+      <img src="assets/ece-logo.jpg" alt="ECE">
+    </div>
+    <div class="small">ING2 — Groupe 09 · SmartCampus</div>
+  </div>
+
+  <h2>X. Bibliographie</h2>
+  <ol>
+    <li>PHP Group, « PHP Manual », [En ligne]. Disponible : https://www.php.net/manual/fr/. [Accès le 28 mai 2026].</li>
+    <li>Oracle, « MySQL 8.0 Reference Manual », [En ligne]. Disponible : https://dev.mysql.com/doc/refman/8.0/en/. [Accès le 28 mai 2026].</li>
+    <li>Bootstrap Team, « Bootstrap 5 documentation », [En ligne]. Disponible : https://getbootstrap.com/docs/5.3/. [Accès le 28 mai 2026].</li>
+    <li>Mozilla Developer Network, « JavaScript — Guide », [En ligne]. Disponible : https://developer.mozilla.org/fr/docs/Web/JavaScript. [Accès le 28 mai 2026].</li>
+    <li>OWASP Foundation, « OWASP Top 10:2021 », [En ligne]. Disponible : https://owasp.org/Top10/. [Accès le 28 mai 2026].</li>
+    <li>Chart.js Contributors, « Chart.js documentation », [En ligne]. Disponible : https://www.chartjs.org/docs/latest/. [Accès le 28 mai 2026].</li>
+    <li>O. Plathey, « FPDF Library », [En ligne]. Disponible : http://www.fpdf.org/. [Accès le 28 mai 2026].</li>
+  </ol>
+</section>
+
+</body>
+</html>

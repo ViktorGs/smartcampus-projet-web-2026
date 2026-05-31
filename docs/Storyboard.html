@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Storyboard — SmartCampus</title>
+<style>
+  @page { size: A4 landscape; margin: 10mm; }
+  @page :first { size: A4 portrait; margin: 0; }
+
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+    font-size: 10.5pt;
+    color: #1a1a1a;
+    line-height: 1.4;
+  }
+
+  :root { --ece: #00807F; --ece-soft: #E6F1F1; --ece-dark: #006666; --orange: #ff6b35; }
+
+  h1, h2, h3 { color: var(--ece); font-weight: 700; margin: 0; }
+  p { margin: 0 0 2mm 0; }
+
+  /* === COVER A4 portrait === */
+  .cover {
+    height: 297mm; width: 210mm;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .cv-logo { position: absolute; top: 22mm; left: 22mm; }
+  .cv-logo img { width: 30mm; height: 30mm; display: block; }
+  .cv-ing { position: absolute; top: 22mm; right: 22mm; font-size: 10pt; color: #4a4a4a; }
+  .cv-title {
+    position: absolute; top: 90mm; left: 22mm; right: 22mm;
+    border-top: 1.2pt solid var(--ece); border-bottom: 1.2pt solid var(--ece);
+    padding: 6mm 4mm; text-align: center;
+  }
+  .cv-title .doc-type { color: var(--ece); font-size: 24pt; font-weight: 800; }
+  .cv-title .doc-sub { color: var(--ece); font-size: 13pt; font-style: italic; margin-top: 3mm; }
+  .cv-info {
+    position: absolute; top: 145mm; left: 22mm; right: 22mm;
+    background: var(--ece-soft); border-left: 2pt solid var(--ece);
+    padding: 5mm 6mm; font-size: 10.5pt;
+  }
+  .cv-meta { position: absolute; top: 205mm; left: 22mm; right: 22mm; }
+  .cv-meta .row { display: flex; justify-content: space-between; margin-bottom: 4mm; }
+  .cv-meta .label { font-style: italic; color: #555; }
+  .cv-footer {
+    position: absolute; bottom: 18mm; left: 22mm; right: 22mm;
+    border-top: 0.4pt solid #c8c8c8;
+    padding-top: 4mm; font-size: 9.5pt; color: #4a4a4a;
+    display: flex; justify-content: space-between;
+  }
+
+  /* === PARCOURS PAGES A4 paysage === */
+  .parcours {
+    page-break-before: always;
+    page: parcours;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .pg-header {
+    display: flex; align-items: center; gap: 6mm;
+    border-bottom: 1.2pt solid var(--ece);
+    padding-bottom: 2mm; margin-bottom: 4mm;
+  }
+  .pg-header img { width: 14mm; height: 14mm; }
+  .pg-header .titre { flex: 1; }
+  .pg-header h2 { font-size: 17pt; }
+  .pg-header .sub { font-size: 10pt; color: #555; margin-top: 1mm; }
+  .pg-header .right { text-align: right; font-size: 9pt; color: #555; }
+
+  .role-badge {
+    display: inline-block;
+    background: var(--ece);
+    color: #fff;
+    padding: 1mm 4mm;
+    border-radius: 20mm;
+    font-weight: 700;
+    font-size: 10pt;
+    margin-right: 4mm;
+  }
+  .role-badge.teacher { background: #1976d2; }
+  .role-badge.admin { background: #7b1fa2; }
+
+  .parcours-intro {
+    background: #fafafa;
+    border-left: 3px solid var(--ece);
+    padding: 2mm 4mm;
+    margin-bottom: 4mm;
+    font-size: 10pt;
+    color: #333;
+  }
+  .parcours.teacher .parcours-intro { border-color: #1976d2; }
+  .parcours.admin .parcours-intro { border-color: #7b1fa2; }
+
+  /* Grille d'étapes */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 3mm 4mm;
+  }
+  .steps.compact { grid-template-columns: repeat(4, 1fr); }
+
+  .step {
+    background: #fff;
+    border: 1px solid #c8c8c8;
+    border-radius: 2mm;
+    overflow: hidden;
+    box-shadow: 1px 1px 0 #eee;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .step .head {
+    display: flex; align-items: center; gap: 2mm;
+    padding: 2mm 3mm;
+    background: var(--ece-soft);
+    border-bottom: 1px solid #ddd;
+  }
+  .parcours.teacher .step .head { background: #e3f0fc; }
+  .parcours.admin .step .head { background: #f3e5f5; }
+  .step .num {
+    background: var(--orange);
+    color: #fff;
+    width: 6mm; height: 6mm;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 10pt;
+    flex-shrink: 0;
+  }
+  .step .title {
+    font-weight: 700;
+    font-size: 10pt;
+    color: #222;
+  }
+  .step .shot {
+    background: #f5f5f5;
+    border-bottom: 1px solid #eee;
+    height: 38mm;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    padding: 1mm;
+  }
+  .step .shot img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border: 0.5px solid #ddd;
+    box-shadow: 0 0 0 0.5px rgba(0,0,0,0.05);
+  }
+  .step .shot.placeholder {
+    background:
+      repeating-linear-gradient(45deg, #e0e0e0, #e0e0e0 2mm, #f0f0f0 2mm, #f0f0f0 4mm);
+    color: #777;
+    font-size: 9pt;
+  }
+  .step .desc {
+    padding: 2mm 3mm;
+    font-size: 8.5pt;
+    color: #444;
+    flex: 1;
+  }
+  .step .desc strong { color: #222; }
+
+  /* Flèche entre les étapes (visible entre cards de la même ligne) */
+  .step::after {
+    content: "→";
+    position: absolute;
+    top: 50%;
+    right: -4mm;
+    transform: translateY(-50%);
+    color: var(--orange);
+    font-weight: 700;
+    font-size: 16pt;
+    z-index: 5;
+  }
+  .step:nth-child(4n)::after { content: ""; }
+  .step.last::after { content: ""; }
+
+  .parcours-footer {
+    margin-top: 4mm;
+    padding: 2mm 4mm;
+    background: #fff8f0;
+    border: 1px dashed var(--orange);
+    border-radius: 1mm;
+    font-size: 9.5pt;
+    color: #555;
+  }
+  .parcours-footer strong { color: var(--orange); }
+</style>
+</head>
+<body>
+
+<!-- ====================== COVER ====================== -->
+<section class="cover">
+  <div class="cv-logo"><img src="assets/ece-logo.jpg" alt="ECE"></div>
+  <div class="cv-ing">ING2 — Groupe 09</div>
+
+  <div class="cv-title">
+    <div class="doc-type">STORYBOARD</div>
+    <div class="doc-sub">Parcours utilisateurs · Projet Web Dynamique 2026 — SmartCampus</div>
+  </div>
+
+  <div class="cv-info">
+    <strong>À propos de ce document.</strong> Le storyboard illustre, étape par étape, le
+    parcours d'un utilisateur dans la plateforme SmartCampus. Chaque scène présente une
+    capture de l'application avec une <strong>action utilisateur</strong> et la
+    <strong>réaction de l'interface</strong>.
+    <ul style="padding-left:5mm; margin:2mm 0;">
+      <li>Trois parcours sont documentés, un par rôle : <strong>étudiant</strong>,
+        <strong>enseignant</strong>, <strong>administrateur</strong>.</li>
+      <li>Les captures proviennent de la version finale de l'application en local.</li>
+      <li>Les pastilles <span style="background:var(--orange);color:#fff;padding:0 2mm;border-radius:50%;font-size:9pt;">1</span>
+        numérotent les étapes ; les flèches <span style="color:var(--orange);font-weight:700;">→</span> indiquent l'enchaînement.</li>
+    </ul>
+  </div>
+
+  <div class="cv-meta">
+    <div class="row">
+      <div>
+        <div class="label">Auteurs :</div>
+        Viktor GOUSSOT · Nicolas CARMINATI · Alexis OSORIO · Louis PEZE
+      </div>
+      <div style="text-align:right;">
+        <div class="label">Enseignant :</div>
+        M. HINA
+      </div>
+    </div>
+    <div class="row">
+      <div><div class="label">Date :</div>28 mai 2026</div>
+      <div style="text-align:right;"><div class="label">Parcours documentés :</div>3 rôles · 20 étapes</div>
+    </div>
+  </div>
+
+  <div class="cv-footer">
+    <div>Nous attestons que ce travail est original et a été rédigé de manière autonome.</div>
+    <div>Paris, le 28/05/2026</div>
+  </div>
+</section>
+
+<!-- ====================== PARCOURS ÉTUDIANT ====================== -->
+<section class="parcours">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="titre">
+      <h2><span class="role-badge">ÉTUDIANT</span>Parcours d'Emma — s'inscrire à un cours et consulter ses notes</h2>
+      <div class="sub">7 étapes · de la connexion au téléchargement du relevé de notes</div>
+    </div>
+    <div class="right">ING2 — Groupe 09<br>SmartCampus · Storyboard</div>
+  </div>
+
+  <div class="parcours-intro">
+    <strong>Contexte.</strong> Emma est étudiante en L2 informatique. Elle se connecte sur SmartCampus en
+    début de semestre pour s'inscrire à ses cours, puis revient régulièrement consulter ses
+    notes et son emploi du temps. Ce parcours montre comment elle utilise les fonctionnalités
+    qui lui sont accessibles.
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="head"><span class="num">1</span><span class="title">Se connecter</span></div>
+      <div class="shot"><img src="screenshots/login.png" alt="Écran de connexion"></div>
+      <div class="desc">
+        Emma saisit son <strong>e-mail</strong> et son <strong>mot de passe</strong>. Le serveur vérifie
+        ses identifiants, crée une session et la redirige vers son tableau de bord.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">2</span><span class="title">Découvrir son tableau de bord</span></div>
+      <div class="shot"><img src="screenshots/student-dashboard.png" alt="Dashboard étudiant"></div>
+      <div class="desc">
+        Vue d'ensemble personnalisée : <strong>nombre de cours, moyenne, ECTS</strong>, prochaines
+        séances et notes récentes. Emma identifie ses priorités en un coup d'œil.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">3</span><span class="title">Parcourir le catalogue</span></div>
+      <div class="shot"><img src="screenshots/student-catalogue.png" alt="Catalogue des cours"></div>
+      <div class="desc">
+        Emma filtre les cours par <strong>niveau (L2), semestre (S3) et département</strong>.
+        Elle voit le taux de remplissage et les ECTS pour faire son choix.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">4</span><span class="title">S'inscrire à un cours</span></div>
+      <div class="shot"><img src="screenshots/student-enroll-toast.png" alt="Toast d'inscription"></div>
+      <div class="desc">
+        Au clic, le serveur vérifie <strong>capacité, prérequis et conflits d'emploi du temps</strong>.
+        Si tout passe, l'inscription est confirmée et une notification est créée.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">5</span><span class="title">Consulter ses cours</span></div>
+      <div class="shot"><img src="screenshots/student-courses.png" alt="Mes cours"></div>
+      <div class="desc">
+        La rubrique « Mes cours » liste les cours auxquels elle est <strong>actuellement inscrite</strong>.
+        Chaque carte mène au détail du cours.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">6</span><span class="title">Consulter ses notes</span></div>
+      <div class="shot"><img src="screenshots/student-grades.png" alt="Mes notes"></div>
+      <div class="desc">
+        Toutes ses notes par cours et type d'évaluation, avec <strong>moyenne pondérée</strong>
+        et statut (admis / non admis). Bouton « Télécharger le relevé PDF ».
+      </div>
+    </div>
+
+    <div class="step last">
+      <div class="head"><span class="num">7</span><span class="title">Voir son emploi du temps</span></div>
+      <div class="shot"><img src="screenshots/student-schedule.png" alt="Emploi du temps"></div>
+      <div class="desc">
+        Vue hebdomadaire <strong>lundi → vendredi</strong> avec ses créneaux personnels colorés.
+        Salle et enseignant lisibles immédiatement.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="parcours-footer">
+    <strong>Règles métier déclenchées :</strong> double inscription (étape 4), contrôle de capacité (4),
+    prérequis académiques (4), conflits d'emploi du temps (4), restrictions par rôle (toutes les étapes).
+  </div>
+</section>
+
+<!-- ====================== PARCOURS ENSEIGNANT ====================== -->
+<section class="parcours teacher">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="titre">
+      <h2><span class="role-badge teacher">ENSEIGNANT</span>Parcours de M. Ali — saisir et valider les notes d'un cours</h2>
+      <div class="sub">5 étapes · de la connexion à la validation finale des notes</div>
+    </div>
+    <div class="right">ING2 — Groupe 09<br>SmartCampus · Storyboard</div>
+  </div>
+
+  <div class="parcours-intro">
+    <strong>Contexte.</strong> M. Ali est enseignant responsable du cours d'algorithmique avancée
+    (INFO-201). En fin de semestre, il doit saisir les notes de chaque type d'évaluation
+    (CC1, CC2, DS, projet, examen), puis verrouiller les notes définitives pour les rendre
+    visibles aux étudiants.
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="head"><span class="num">1</span><span class="title">Se connecter</span></div>
+      <div class="shot"><img src="screenshots/login.png" alt="Écran de connexion (compte enseignant)"></div>
+      <div class="desc">
+        Authentification standard. La session enseignant lui donne accès à <strong>ses cours
+        uniquement</strong>, pas à la gestion globale.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">2</span><span class="title">Ouvrir son tableau de bord</span></div>
+      <div class="shot"><img src="screenshots/teacher-dashboard.png" alt="Dashboard enseignant"></div>
+      <div class="desc">
+        Vue adaptée enseignant : <strong>cours dont il a la charge</strong>, étudiants inscrits,
+        prochaines séances. Différent du dashboard étudiant.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">3</span><span class="title">Sélectionner un cours</span></div>
+      <div class="shot"><img src="screenshots/teacher-course-detail.png" alt="Page de détail du cours"></div>
+      <div class="desc">
+        Depuis la liste de ses cours, M. Ali clique sur celui qu'il veut traiter. La page de
+        détail affiche les <strong>étudiants inscrits</strong> et la grille de notes.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">4</span><span class="title">Saisir les notes</span></div>
+      <div class="shot"><img src="screenshots/teacher-course-grades.png" alt="Grille de notes enseignant"></div>
+      <div class="desc">
+        Il clique sur une cellule (étudiant × type) pour <strong>saisir ou modifier une note</strong>.
+        Validation immédiate (0 ≤ note ≤ 20). Le calcul de moyenne est mis à jour en direct.
+      </div>
+    </div>
+
+    <div class="step last">
+      <div class="head"><span class="num">5</span><span class="title">Valider et verrouiller</span></div>
+      <div class="shot"><img src="screenshots/teacher-validate-modal.png" alt="Modale de validation des notes"></div>
+      <div class="desc">
+        Une fois les notes complètes, il clique sur <strong>« Valider »</strong> : les notes deviennent
+        <strong>définitives</strong>, ne peuvent plus être modifiées et sont publiées aux étudiants.
+      </div>
+    </div>
+
+  </div>
+
+  <div class="parcours-footer">
+    <strong>Règles métier déclenchées :</strong> restriction « un enseignant ne note que ses cours »
+    (étapes 3 &amp; 4), validation des valeurs de notes 0–20 (4), verrouillage post-validation (5),
+    notification automatique aux étudiants concernés (5).
+  </div>
+</section>
+
+<!-- ====================== PARCOURS ADMINISTRATEUR ====================== -->
+<section class="parcours admin">
+  <div class="pg-header">
+    <img src="assets/ece-logo.jpg" alt="ECE">
+    <div class="titre">
+      <h2><span class="role-badge admin">ADMINISTRATEUR</span>Parcours de Marie — gérer le campus en début d'année</h2>
+      <div class="sub">8 étapes · de la création de comptes à l'analyse statistique</div>
+    </div>
+    <div class="right">ING2 — Groupe 09<br>SmartCampus · Storyboard</div>
+  </div>
+
+  <div class="parcours-intro">
+    <strong>Contexte.</strong> Marie est responsable pédagogique. En début d'année universitaire,
+    elle paramètre l'ensemble du campus : création des comptes étudiants et enseignants, mise
+    en place du catalogue de cours, planification de l'emploi du temps, puis suivi en cours
+    d'année via les statistiques de réussite.
+  </div>
+
+  <div class="steps">
+
+    <div class="step">
+      <div class="head"><span class="num">1</span><span class="title">Tableau de bord admin</span></div>
+      <div class="shot"><img src="screenshots/admin-dashboard.png" alt="Dashboard admin"></div>
+      <div class="desc">
+        Synthèse globale du campus : <strong>nombre total d'étudiants, d'enseignants, de cours,
+        d'inscriptions</strong>. Marie vérifie l'état du système d'un coup d'œil.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">2</span><span class="title">Gérer les étudiants</span></div>
+      <div class="shot"><img src="screenshots/admin-students.png" alt="Gestion étudiants"></div>
+      <div class="desc">
+        Liste filtrable des étudiants avec recherche, tri, et <strong>actions CRUD</strong>
+        (créer, modifier, supprimer). Profil détaillé accessible en un clic.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">3</span><span class="title">Gérer les enseignants</span></div>
+      <div class="shot"><img src="screenshots/admin-teachers.png" alt="Gestion enseignants"></div>
+      <div class="desc">
+        Même interface que pour les étudiants, adaptée au rôle enseignant
+        (<strong>département, grade, matricule</strong>). Association avec leurs cours.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">4</span><span class="title">Gérer les cours</span></div>
+      <div class="shot"><img src="screenshots/admin-courses.png" alt="Gestion cours"></div>
+      <div class="desc">
+        Catalogue éditable : <strong>création, modification, archivage</strong> des cours.
+        Affectation des enseignants responsables. Définition de la capacité.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">5</span><span class="title">Planifier l'emploi du temps</span></div>
+      <div class="shot"><img src="screenshots/admin-schedule.png" alt="Emploi du temps admin"></div>
+      <div class="desc">
+        Ajout de créneaux par drag &amp; click. Le serveur <strong>détecte automatiquement les
+        conflits</strong> de salle ou d'enseignant et refuse les chevauchements.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">6</span><span class="title">Suivre les statistiques</span></div>
+      <div class="shot"><img src="screenshots/admin-stats.png" alt="Statistiques admin"></div>
+      <div class="desc">
+        Graphiques Chart.js : <strong>taux de réussite par cours, répartition par filière,
+        moyennes</strong> par niveau. Aide à la décision pédagogique.
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="head"><span class="num">7</span><span class="title">Modérer les comptes</span></div>
+      <div class="shot"><img src="screenshots/admin-users.png" alt="Gestion utilisateurs"></div>
+      <div class="desc">
+        Vue unifiée de <strong>tous les comptes</strong> avec activation / désactivation /
+        suppression. Recherche transverse étudiants + enseignants + administrateurs.
+      </div>
+    </div>
+
+    <div class="step last">
+      <div class="head"><span class="num">8</span><span class="title">Fin de la session admin</span></div>
+      <div class="shot"><img src="screenshots/admin-logout.png" alt="Menu déconnexion ouvert"></div>
+      <div class="desc">
+        À la déconnexion, la session serveur est <strong>détruite</strong> et le cookie
+        invalidé. Toutes les actions sont tracées (`updated_at` sur chaque ressource).
+      </div>
+    </div>
+
+  </div>
+
+  <div class="parcours-footer">
+    <strong>Règles métier déclenchées :</strong> contrôle d'accès RBAC strict (toutes les étapes),
+    détection de conflits salle/enseignant (étape 5), cohérence référentielle SQL avec ON DELETE
+    CASCADE/SET NULL (toutes les CRUD), validation côté serveur des entrées (2, 3, 4).
+  </div>
+</section>
+
+</body>
+</html>

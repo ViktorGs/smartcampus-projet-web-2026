@@ -1,0 +1,191 @@
+// =====================================================================
+//  SmartCampus — Diagramme entité-relation (DBML)
+//  Pour visualiser : copier-coller ce fichier sur https://dbdiagram.io
+//  Puis cliquer sur "Export" -> PNG ou PDF
+// =====================================================================
+
+Project SmartCampus {
+  database_type: 'MySQL'
+  Note: '''
+    # SmartCampus
+    Plateforme de gestion académique pour une école d'ingénieurs.
+    Groupe 09 — ING2 — Projet Web dynamique 2026.
+  '''
+}
+
+// ---------------------------------------------------------------------
+// 1. UTILISATEURS (table mère commune aux 3 rôles)
+// ---------------------------------------------------------------------
+Table users {
+  id            int          [pk, increment]
+  role          varchar      [not null, note: "enum: admin / teacher / student"]
+  email         varchar(150) [not null, unique]
+  password_hash varchar(255) [not null, note: "bcrypt"]
+  first_name    varchar(80)  [not null]
+  last_name     varchar(80)  [not null]
+  gender        varchar      [note: "enum: M / F / Autre"]
+  phone         varchar(30)
+  is_active     boolean      [not null, default: true]
+  created_at    datetime     [not null, default: `CURRENT_TIMESTAMP`]
+  updated_at    datetime     [not null]
+
+  indexes {
+    role [name: 'idx_users_role']
+  }
+
+  Note: "Table mère : authentification commune aux 3 rôles."
+}
+
+// ---------------------------------------------------------------------
+// 2. PROFIL ÉTUDIANT (1-1 avec users)
+// ---------------------------------------------------------------------
+Table student_profiles {
+  user_id          int          [pk, ref: - users.id]
+  student_number   varchar(20)  [not null, unique, note: "ex: E2026045"]
+  filiere          varchar(80)  [not null]
+  niveau           varchar      [not null, note: "enum: L1..M2"]
+  group_td         varchar(20)
+  date_naissance   date
+  date_inscription date         [not null]
+  address          varchar(255)
+  photo            varchar(255)
+
+  Note: "Extension 1-1 de users pour les étudiants."
+}
+
+// ---------------------------------------------------------------------
+// 3. PROFIL ENSEIGNANT (1-1 avec users)
+// ---------------------------------------------------------------------
+Table teacher_profiles {
+  user_id         int          [pk, ref: - users.id]
+  employee_number varchar(20)  [not null, unique, note: "ex: ENS0007"]
+  department      varchar(80)  [not null]
+  grade           varchar      [not null, note: "enum: Professeur / MdC / MA / Vacataire"]
+  office          varchar(40)
+  hire_date       date
+
+  Note: "Extension 1-1 de users pour les enseignants."
+}
+
+// ---------------------------------------------------------------------
+// 4. COURS
+// ---------------------------------------------------------------------
+Table courses {
+  id          int          [pk, increment]
+  code        varchar(20)  [not null, unique, note: "ex: INFO-301"]
+  name        varchar(120) [not null]
+  description text
+  credits     int          [not null, default: 3, note: "ECTS"]
+  semester    varchar      [not null, note: "S1..S10"]
+  niveau      varchar      [not null, note: "L1..M2"]
+  department  varchar(80)  [not null]
+  teacher_id  int          [ref: > users.id, note: "enseignant responsable"]
+  capacity    int          [not null, default: 30]
+  is_archived boolean      [not null, default: false]
+  created_at  datetime     [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    (niveau, semester, department) [name: 'idx_course_filter']
+  }
+}
+
+// ---------------------------------------------------------------------
+// 5. PRÉREQUIS (relation N-N réflexive sur courses)
+// ---------------------------------------------------------------------
+Table prerequisites {
+  course_id              int [pk, ref: > courses.id]
+  prerequisite_course_id int [pk, ref: > courses.id]
+
+  Note: "Règle métier : un cours peut exiger d'autres cours validés."
+}
+
+// ---------------------------------------------------------------------
+// 6. INSCRIPTIONS (association étudiant - cours)
+// ---------------------------------------------------------------------
+Table enrollments {
+  id          int      [pk, increment]
+  student_id  int      [not null, ref: > users.id]
+  course_id   int      [not null, ref: > courses.id]
+  enrolled_at datetime [not null, default: `CURRENT_TIMESTAMP`]
+  status      varchar  [not null, default: 'active', note: "enum: active / dropped"]
+
+  indexes {
+    (student_id, course_id) [unique, name: 'uq_enroll']
+  }
+
+  Note: "UNIQUE(student_id, course_id) => règle pas-de-double-inscription."
+}
+
+// ---------------------------------------------------------------------
+// 7. NOTES
+// ---------------------------------------------------------------------
+Table grades {
+  id          int          [pk, increment]
+  student_id  int          [not null, ref: > users.id]
+  course_id   int          [not null, ref: > courses.id]
+  eval_type   varchar      [not null, note: "CC1 / CC2 / DS / Projet / Examen"]
+  value       decimal(4,2) [not null, note: "note /20"]
+  coefficient decimal(4,2) [not null, default: 1.00]
+  comment     varchar(255)
+  is_locked   boolean      [not null, default: false, note: "verrouillage post-validation"]
+  graded_by   int          [ref: > users.id, note: "enseignant"]
+  graded_at   datetime     [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    (student_id, course_id, eval_type) [unique, name: 'uq_grade']
+    course_id [name: 'idx_grade_course']
+  }
+}
+
+// ---------------------------------------------------------------------
+// 8. EMPLOI DU TEMPS
+// ---------------------------------------------------------------------
+Table schedule_slots {
+  id          int     [pk, increment]
+  course_id   int     [not null, ref: > courses.id]
+  day_of_week int     [not null, note: "1=Lundi ... 6=Samedi"]
+  start_time  time    [not null]
+  end_time    time    [not null]
+  room        varchar(40) [not null]
+  group_td    varchar(20)
+
+  indexes {
+    day_of_week [name: 'idx_slot_day']
+  }
+}
+
+// ---------------------------------------------------------------------
+// 9. MESSAGES (bonus)
+// ---------------------------------------------------------------------
+Table messages {
+  id           int      [pk, increment]
+  sender_id    int      [not null, ref: > users.id]
+  recipient_id int      [not null, ref: > users.id]
+  subject      varchar(150) [not null]
+  body         text     [not null]
+  is_read      boolean  [not null, default: false]
+  sent_at      datetime [not null, default: `CURRENT_TIMESTAMP`]
+  read_at      datetime
+
+  indexes {
+    (recipient_id, is_read) [name: 'idx_msg_recipient']
+  }
+}
+
+// ---------------------------------------------------------------------
+// 10. NOTIFICATIONS (bonus)
+// ---------------------------------------------------------------------
+Table notifications {
+  id         int      [pk, increment]
+  user_id    int      [not null, ref: > users.id]
+  type       varchar(40) [not null, note: "grade / enrollment / schedule / message"]
+  title      varchar(150) [not null]
+  content    varchar(255)
+  link       varchar(150)
+  is_read    boolean  [not null, default: false]
+  created_at datetime [not null, default: `CURRENT_TIMESTAMP`]
+
+  indexes {
+    (user_id, is_read) [name: 'idx_notif_user']
+  }
+}

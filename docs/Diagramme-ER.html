@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Modèle entité-association — SmartCampus</title>
+<style>
+  @page { size: A3 landscape; margin: 5mm; }
+  html, body { margin: 0; padding: 0; background: #fff; font-family: "Calibri", "Segoe UI", Arial, sans-serif; }
+
+  .canvas {
+    position: relative;
+    width: 1700px;
+    height: 1180px;
+    margin: 0 auto;
+    background: #fff;
+    zoom: 0.87;
+  }
+
+  /* ====== Entité ====== */
+  .entity {
+    position: absolute;
+    background: #fff;
+    border: 1.2px solid #000;
+    font-size: 11.5px;
+    color: #000;
+    box-shadow: 1px 1px 0 #000;
+  }
+  .entity .ehead {
+    background: #e6ecf0;
+    border-bottom: 1px solid #000;
+    padding: 3px 8px;
+    font-weight: 700;
+    text-align: center;
+    font-size: 12.5px;
+    letter-spacing: 0.3px;
+  }
+  .entity .erows { padding: 4px 6px 6px 6px; }
+  .entity .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 1px 4px;
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 10.5px;
+  }
+  .entity .row .pk { text-decoration: underline; font-weight: 700; }
+  .entity .row .type { color: #555; }
+  .entity .key::before {
+    content: "🔑"; font-size: 9px; margin-right: 3px; filter: grayscale(1);
+  }
+
+  /* ====== Association ====== */
+  .assoc {
+    position: absolute;
+    background: #fff;
+    border: 1.2px solid #000;
+    border-radius: 14px;
+    padding: 4px 10px;
+    font-weight: 700;
+    font-size: 11.5px;
+    text-align: center;
+    box-shadow: 1px 1px 0 #000;
+    white-space: nowrap;
+    z-index: 5;
+  }
+  .assoc .verb { display: block; }
+  .assoc .attrs {
+    display: block;
+    margin-top: 3px;
+    padding-top: 3px;
+    border-top: 0.5px solid #999;
+    font-weight: 400;
+    font-size: 10px;
+    color: #333;
+    font-family: "Consolas", "Courier New", monospace;
+  }
+
+  /* ====== SVG lignes ====== */
+  svg.edges {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  svg.edges line, svg.edges path { fill: none; stroke: #000; stroke-width: 1.1; }
+  svg.edges text {
+    font-family: "Calibri", Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    fill: #006666;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="canvas">
+
+  <!-- =================================================================
+       LAYOUT : UTILISATEUR au centre, entités-satellites autour
+       ================================================================= -->
+
+  <!-- MESSAGE : haut-gauche -->
+  <div class="entity" style="left:60px; top:50px; width:260px;">
+    <div class="ehead">MESSAGE</div>
+    <div class="erows">
+      <div class="row"><span class="pk key">id_message</span><span class="type">INT</span></div>
+      <div class="row"><span>sujet</span><span class="type">VARCHAR(150)</span></div>
+      <div class="row"><span>contenu</span><span class="type">TEXT</span></div>
+      <div class="row"><span>lu</span><span class="type">BOOL</span></div>
+      <div class="row"><span>date_envoi</span><span class="type">DATETIME</span></div>
+      <div class="row"><span>date_lecture</span><span class="type">DATETIME</span></div>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION : haut-droite -->
+  <div class="entity" style="left:1380px; top:50px; width:260px;">
+    <div class="ehead">NOTIFICATION</div>
+    <div class="erows">
+      <div class="row"><span class="pk key">id_notification</span><span class="type">INT</span></div>
+      <div class="row"><span>type</span><span class="type">VARCHAR(40)</span></div>
+      <div class="row"><span>titre</span><span class="type">VARCHAR(150)</span></div>
+      <div class="row"><span>contenu</span><span class="type">VARCHAR(255)</span></div>
+      <div class="row"><span>lien</span><span class="type">VARCHAR(150)</span></div>
+      <div class="row"><span>lu</span><span class="type">BOOL</span></div>
+      <div class="row"><span>creee_le</span><span class="type">DATETIME</span></div>
+    </div>
+  </div>
+
+  <!-- ÉTUDIANT : milieu-gauche -->
+  <div class="entity" style="left:60px; top:430px; width:260px;">
+    <div class="ehead">ÉTUDIANT</div>
+    <div class="erows">
+      <div class="row"><span class="pk key">num_etudiant</span><span class="type">VARCHAR(20)</span></div>
+      <div class="row"><span>filiere</span><span class="type">VARCHAR(80)</span></div>
+      <div class="row"><span>niveau</span><span class="type">ENUM L1..M2</span></div>
+      <div class="row"><span>groupe_td</span><span class="type">VARCHAR(20)</span></div>
+      <div class="row"><span>date_naissance</span><span class="type">DATE</span></div>
+      <div class="row"><span>date_inscription</span><span class="type">DATE</span></div>
+      <div class="row"><span>adresse</span><span class="type">VARCHAR(255)</span></div>
+      <div class="row"><span>photo</span><span class="type">VARCHAR(255)</span></div>
+    </div>
+  </div>
+
+  <!-- UTILISATEUR : centre -->
+  <div class="entity" style="left:720px; top:410px; width:280px;">
+    <div class="ehead">UTILISATEUR</div>
+    <div class="erows">
+      <div class="row"><span class="pk key">id_utilisateur</span><span class="type">INT</span></div>
+      <div class="row"><span>email</span><span class="type">VARCHAR(150)</span></div>
+      <div class="row"><span>mot_de_passe</span><span class="type">VARCHAR(255)</span></div>
+      <div class="row"><span>prenom</span><span class="type">VARCHAR(80)</span></div>
+      <div class="row"><span>nom</span><span class="type">VARCHAR(80)</span></div>
+      <div class="row"><span>role</span><span class="type">ENUM</span></div>
+      <div class="row"><span>genre</span><span class="type">ENUM</span></div>
+      <div class="row"><span>telephone</span><span class="type">VARCHAR(30)</span></div>
+      <div class="row"><span>est_actif</span><span class="type">BOOL</span></div>
+      <div class="row"><span>cree_le</span><span class="type">DATETIME</span></div>
+    </div>
+  </div>
+
+  <!-- ENSEIGNANT : milieu-droite -->
+  <div class="entity" style="left:1380px; top:430px; width:260px;">
+    <div class="ehead">ENSEIGNANT</div>
+    <div class="erows">
+      <div class="row"><span class="pk key">num_employe</span><span class="type">VARCHAR(20)</span></div>
+      <div class="row"><span>departement</span><span class="type">VARCHAR(80)</span></div>
+      <div class="row"><span>grade</span><span class="type">ENUM</span></div>
+      <div class="row"><span>bureau</span><span class="type">VARCHAR(40)</span></div>
+      <div class="row"><span>date_embauche</span><span class="type">DATE</span></div>
+    </div>
+  </div>
+
+  <!-- COURS : bas centre -->
+  <div class="entity" style="left:720px; top:830px; width:280px;">
+    <div class="ehead">COURS</div>
+    <div class="erows">
+      <div class="row"><span class="pk key">code_cours</span><span class="type">VARCHAR(20)</span></div>
+      <div class="row"><span>nom</span><span class="type">VARCHAR(120)</span></div>
+      <div class="row"><span>description</span><span class="type">TEXT</span></div>
+      <div class="row"><span>credits_ects</span><span class="type">INT</span></div>
+      <div class="row"><span>semestre</span><span class="type">ENUM S1..S10</span></div>
+      <div class="row"><span>niveau</span><span class="type">ENUM L1..M2</span></div>
+      <div class="row"><span>departement</span><span class="type">VARCHAR(80)</span></div>
+      <div class="row"><span>capacite</span><span class="type">INT</span></div>
+      <div class="row"><span>archive</span><span class="type">BOOL</span></div>
+    </div>
+  </div>
+
+  <!-- CRÉNEAU : bas-droite -->
+  <div class="entity" style="left:1380px; top:880px; width:260px;">
+    <div class="ehead">CRÉNEAU</div>
+    <div class="erows">
+      <div class="row"><span class="pk key">id_creneau</span><span class="type">INT</span></div>
+      <div class="row"><span>jour_semaine</span><span class="type">TINYINT 1-7</span></div>
+      <div class="row"><span>heure_debut</span><span class="type">TIME</span></div>
+      <div class="row"><span>heure_fin</span><span class="type">TIME</span></div>
+      <div class="row"><span>salle</span><span class="type">VARCHAR(40)</span></div>
+      <div class="row"><span>groupe_td</span><span class="type">VARCHAR(20)</span></div>
+    </div>
+  </div>
+
+  <!-- ===================== ASSOCIATIONS ===================== -->
+
+  <!-- Envoyer : USER -> MESSAGE -->
+  <div class="assoc" style="left:430px; top:155px; width:100px;">
+    <span class="verb">Envoyer</span>
+  </div>
+  <!-- Recevoir : USER -> MESSAGE -->
+  <div class="assoc" style="left:430px; top:245px; width:100px;">
+    <span class="verb">Recevoir</span>
+  </div>
+  <!-- Notifier : USER -> NOTIFICATION -->
+  <div class="assoc" style="left:1180px; top:200px; width:110px;">
+    <span class="verb">Notifier</span>
+  </div>
+
+  <!-- Est étudiant : USER <-> ÉTUDIANT -->
+  <div class="assoc" style="left:430px; top:495px; width:130px;">
+    <span class="verb">Est étudiant</span>
+  </div>
+  <!-- Est enseignant : USER <-> ENSEIGNANT -->
+  <div class="assoc" style="left:1170px; top:495px; width:140px;">
+    <span class="verb">Est enseignant</span>
+  </div>
+
+  <!-- S'inscrire (porteuse) : ÉTUDIANT <-> COURS -->
+  <div class="assoc" style="left:380px; top:760px; width:170px;">
+    <span class="verb">S'inscrire</span>
+    <span class="attrs">date_inscription · statut</span>
+  </div>
+  <!-- Évaluer (porteuse) : ÉTUDIANT <-> COURS -->
+  <div class="assoc" style="left:380px; top:870px; width:200px;">
+    <span class="verb">Évaluer</span>
+    <span class="attrs">type · note · coef · verrouillée</span>
+  </div>
+
+  <!-- Enseigne : ENSEIGNANT -> COURS -->
+  <div class="assoc" style="left:1130px; top:790px; width:110px;">
+    <span class="verb">Enseigner</span>
+  </div>
+
+  <!-- Planifier : COURS -> CRÉNEAU -->
+  <div class="assoc" style="left:1130px; top:920px; width:120px;">
+    <span class="verb">Planifier</span>
+  </div>
+
+  <!-- Prérequis : COURS réflexif -->
+  <div class="assoc" style="left:850px; top:1070px; width:120px;">
+    <span class="verb">Prérequis</span>
+  </div>
+
+  <!-- ===================== LIGNES + CARDINALITÉS ===================== -->
+  <!--
+       Conventions :
+       - chaque ligne part du BORD d'une entité ou d'une association
+       - les cardinalités sont placées contre l'entité concernée (pas au milieu)
+  -->
+  <svg class="edges" viewBox="0 0 1700 1180" preserveAspectRatio="none">
+
+    <!-- Repères des bords d'entités utilisés ci-dessous :
+         MESSAGE       x[60,320]   y[50,200]
+         NOTIFICATION  x[1380,1640] y[50,210]
+         ÉTUDIANT      x[60,320]   y[430,605]
+         UTILISATEUR   x[720,1000] y[410,620]
+         ENSEIGNANT    x[1380,1640] y[430,555]
+         COURS         x[720,1000] y[830,1010]
+         CRÉNEAU       x[1380,1640] y[880,1015]
+    -->
+
+    <!-- ==== Envoyer : USER (left) → Envoyer → MESSAGE (right/bottom) ==== -->
+    <line x1="720" y1="445" x2="530" y2="178"/>
+    <line x1="430" y1="178" x2="320" y2="140"/>
+    <text x="690" y="430" text-anchor="end">1,1</text>
+    <text x="335" y="160">0,n</text>
+
+    <!-- ==== Recevoir : USER → Recevoir → MESSAGE ==== -->
+    <line x1="720" y1="490" x2="530" y2="268"/>
+    <line x1="430" y1="268" x2="280" y2="165"/>
+    <text x="690" y="475" text-anchor="end">1,1</text>
+    <text x="290" y="180">0,n</text>
+
+    <!-- ==== Notifier : USER (right) → Notifier → NOTIFICATION (left) ==== -->
+    <line x1="1000" y1="450" x2="1180" y2="222"/>
+    <line x1="1290" y1="222" x2="1380" y2="165"/>
+    <text x="1010" y="440">1,1</text>
+    <text x="1355" y="180" text-anchor="end">0,n</text>
+
+    <!-- ==== Est étudiant : USER (left) ↔ Est étudiant ↔ ÉTUDIANT (right) ==== -->
+    <line x1="720" y1="515" x2="560" y2="513"/>
+    <line x1="430" y1="513" x2="320" y2="515"/>
+    <text x="710" y="508" text-anchor="end">1,1</text>
+    <text x="330" y="508">0,1</text>
+
+    <!-- ==== Est enseignant : USER (right) ↔ Est enseignant ↔ ENSEIGNANT (left) ==== -->
+    <line x1="1000" y1="515" x2="1170" y2="513"/>
+    <line x1="1310" y1="513" x2="1380" y2="515"/>
+    <text x="1010" y="508">1,1</text>
+    <text x="1370" y="508" text-anchor="end">0,1</text>
+
+    <!-- ==== S'inscrire : ÉTUDIANT (bottom y≈573) ↔ S'inscrire ↔ COURS (top y=830) ==== -->
+    <line x1="220" y1="573" x2="380" y2="785"/>
+    <line x1="550" y1="785" x2="730" y2="830"/>
+    <text x="225" y="593">0,n</text>
+    <text x="710" y="820" text-anchor="end">0,n</text>
+
+    <!-- ==== Évaluer : ÉTUDIANT ↔ Évaluer ↔ COURS ==== -->
+    <line x1="280" y1="573" x2="380" y2="895"/>
+    <line x1="580" y1="895" x2="755" y2="830"/>
+    <text x="285" y="593">0,n</text>
+    <text x="755" y="820" text-anchor="end">0,n</text>
+
+    <!-- ==== Enseigner : ENSEIGNANT (bottom y≈530) ↔ Enseigner ↔ COURS (right) ==== -->
+    <line x1="1480" y1="530" x2="1240" y2="800"/>
+    <line x1="1130" y1="800" x2="1000" y2="850"/>
+    <text x="1490" y="550">0,1</text>
+    <text x="1010" y="845">0,n</text>
+
+    <!-- ==== Planifier : COURS (right x=1000) ↔ Planifier ↔ CRÉNEAU (left x=1380) ==== -->
+    <line x1="1000" y1="940" x2="1130" y2="940"/>
+    <line x1="1250" y1="940" x2="1380" y2="935"/>
+    <text x="1010" y="935">1,n</text>
+    <text x="1370" y="930" text-anchor="end">1,1</text>
+
+    <!-- ==== Prérequis : réflexive sur COURS (bottom y≈986, Prérequis top y=1070) ==== -->
+    <path d="M 820 986 C 820 1030 870 1070 870 1070"/>
+    <text x="810" y="1020" text-anchor="end">0,n</text>
+    <path d="M 980 986 C 980 1030 950 1070 950 1070"/>
+    <text x="990" y="1020">0,n</text>
+
+  </svg>
+
+</div>
+
+</body>
+</html>

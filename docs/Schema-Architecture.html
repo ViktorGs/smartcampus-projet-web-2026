@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Schéma d'architecture — SmartCampus</title>
+<style>
+  @page { size: A3 landscape; margin: 8mm; }
+  html, body { margin: 0; padding: 0; background: #fff; font-family: "Calibri", "Segoe UI", Arial, sans-serif; }
+
+  .canvas {
+    position: relative;
+    width: 1700px;
+    height: 1050px;
+    margin: 0 auto;
+    background: #fff;
+    zoom: 0.87;
+  }
+
+  .title {
+    position: absolute;
+    top: 25px; left: 0; right: 0;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: #1a2a3a;
+  }
+  .subtitle {
+    position: absolute;
+    top: 60px; left: 0; right: 0;
+    text-align: center;
+    font-size: 13px;
+    color: #555;
+  }
+
+  /* ====== Grosses zones (Client / Serveur / DB) ====== */
+  .zone {
+    position: absolute;
+    border: 2px dashed #6b7c8c;
+    border-radius: 14px;
+    background: #f7f9fb;
+    z-index: 0;
+  }
+  .zone .ztitle {
+    position: absolute;
+    top: -14px; left: 18px;
+    background: #fff;
+    padding: 0 10px;
+    font-weight: 700;
+    font-size: 13.5px;
+    color: #2b3a4a;
+    letter-spacing: 0.3px;
+  }
+
+  /* ====== Composants ====== */
+  .box {
+    position: absolute;
+    background: #fff;
+    border: 1.4px solid #1a2a3a;
+    border-radius: 10px;
+    box-shadow: 1.5px 1.5px 0 #1a2a3a;
+    padding: 10px 14px;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.35;
+    z-index: 2;
+  }
+  .box .name { font-weight: 700; font-size: 13.5px; }
+  .box .detail { font-size: 11px; color: #555; margin-top: 3px; font-family: "Consolas", "Courier New", monospace; }
+
+  .box.front  { background: #e7f1fb; border-color: #2766b8; box-shadow: 1.5px 1.5px 0 #2766b8; }
+  .box.back   { background: #fff3df; border-color: #b87a18; box-shadow: 1.5px 1.5px 0 #b87a18; }
+  .box.db     { background: #e6f5ea; border-color: #1f7a3a; box-shadow: 1.5px 1.5px 0 #1f7a3a; }
+  .box.user   { background: #f0eaf7; border-color: #5a3a8a; box-shadow: 1.5px 1.5px 0 #5a3a8a; border-radius: 50px; }
+
+  /* ====== Flèches SVG ====== */
+  svg.edges {
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  svg.edges path, svg.edges line { fill: none; stroke: #1a2a3a; stroke-width: 1.6; }
+  svg.edges .arrow { fill: #1a2a3a; }
+  svg.edges text {
+    font-family: "Calibri", Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    fill: #1a2a3a;
+  }
+  svg.edges text.proto {
+    font-size: 11.5px;
+    fill: #006666;
+    font-family: "Consolas", "Courier New", monospace;
+  }
+
+  .legend {
+    position: absolute;
+    left: 60px; bottom: 30px;
+    font-size: 11.5px;
+    color: #333;
+    background: #fff;
+    border: 1px solid #aab;
+    padding: 8px 12px;
+    border-radius: 6px;
+    z-index: 3;
+  }
+  .legend b { color: #1a2a3a; }
+  .legend .dot { display:inline-block; width:10px; height:10px; border-radius:2px; margin-right:5px; vertical-align:middle; border:1px solid #555; }
+
+</style>
+</head>
+<body>
+
+<div class="canvas">
+
+  <div class="title">Schéma d'architecture — SmartCampus</div>
+  <div class="subtitle">Architecture 3 tiers : Client (SPA) &lt;-&gt; Serveur (PHP/Apache, API REST JSON) &lt;-&gt; Base de données (MySQL)</div>
+
+  <!-- ======================= ZONES (décor) ======================= -->
+  <div class="zone" style="left:310px; top:130px; width:430px; height:760px;">
+    <div class="ztitle">CLIENT — Navigateur (Frontend SPA)</div>
+  </div>
+  <div class="zone" style="left:830px; top:130px; width:560px; height:760px;">
+    <div class="ztitle">SERVEUR — Apache + PHP 8 (Backend)</div>
+  </div>
+  <div class="zone" style="left:1470px; top:130px; width:170px; height:760px;">
+    <div class="ztitle">BASE</div>
+  </div>
+
+  <!-- ======================= UTILISATEUR ======================= -->
+  <div class="box user" style="left:80px; top:455px; width:160px;">
+    <div class="name">Utilisateur</div>
+    <div class="detail">admin · enseignant · étudiant</div>
+  </div>
+
+  <!-- ======================= COMPOSANTS CLIENT ======================= -->
+  <div class="box front" style="left:355px; top:185px; width:340px;">
+    <div class="name">Interface Bootstrap 5</div>
+    <div class="detail">index.html · styles.css</div>
+  </div>
+  <div class="box front" style="left:355px; top:295px; width:340px;">
+    <div class="name">Modules JS ES (SPA)</div>
+    <div class="detail">app.js · router.js · pages/*.js</div>
+  </div>
+  <div class="box front" style="left:355px; top:405px; width:340px;">
+    <div class="name">State &amp; UI</div>
+    <div class="detail">store.js · auth.js · ui.js</div>
+  </div>
+  <div class="box front" style="left:355px; top:515px; width:340px;">
+    <div class="name">Client HTTP</div>
+    <div class="detail">api.js  (fetch + X-CSRF-Token)</div>
+  </div>
+  <div class="box front" style="left:355px; top:660px; width:340px;">
+    <div class="name">Visualisation</div>
+    <div class="detail">Chart.js (vendors locaux)</div>
+  </div>
+
+  <!-- ======================= COMPOSANTS SERVEUR ======================= -->
+  <div class="box back" style="left:870px; top:185px; width:480px;">
+    <div class="name">Apache  +  .htaccess</div>
+    <div class="detail">réécriture /api/* &gt; api/index.php</div>
+  </div>
+  <div class="box back" style="left:870px; top:285px; width:480px;">
+    <div class="name">Front controller &amp; Router</div>
+    <div class="detail">api/index.php · core/Router.php</div>
+  </div>
+  <div class="box back" style="left:870px; top:385px; width:480px;">
+    <div class="name">Sécurité (middlewares)</div>
+    <div class="detail">Auth · CSRF · RBAC · Validator</div>
+  </div>
+  <div class="box back" style="left:870px; top:485px; width:480px;">
+    <div class="name">Contrôleurs REST</div>
+    <div class="detail">Auth · User · Student · Teacher · Course · Enrollment<br>Grade · Schedule · Message · Notification · Dashboard …</div>
+  </div>
+  <div class="box back" style="left:870px; top:615px; width:480px;">
+    <div class="name">Logique métier</div>
+    <div class="detail">core/Academic.php  (capacité, prérequis,<br>conflits horaires, verrouillage des notes)</div>
+  </div>
+  <div class="box back" style="left:870px; top:730px; width:480px;">
+    <div class="name">Accès données (PDO)</div>
+    <div class="detail">config/Database.php  (Singleton, prepared statements)</div>
+  </div>
+
+  <!-- ======================= BASE ======================= -->
+  <div class="box db" style="left:1485px; top:420px; width:140px;">
+    <div class="name">MySQL 8</div>
+    <div class="detail">smartcampus<br>14 tables<br>InnoDB / UTF-8</div>
+  </div>
+
+  <!-- ======================= FLÈCHES ======================= -->
+  <svg class="edges" viewBox="0 0 1700 1050" preserveAspectRatio="none">
+    <defs>
+      <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+        <path class="arrow" d="M 0 0 L 10 5 L 0 10 z"/>
+      </marker>
+    </defs>
+
+    <!-- Utilisateur <-> Interface Bootstrap (interagit / affichage) -->
+    <line x1="170" y1="455" x2="355" y2="210" marker-end="url(#ar)"/>
+    <line x1="355" y1="235" x2="170" y2="480" marker-end="url(#ar)"/>
+    <text x="195" y="335">interagit</text>
+    <text x="195" y="395">affichage</text>
+
+    <!-- Flux interne Client (haut -> bas) -->
+    <line x1="525" y1="230" x2="525" y2="290" marker-end="url(#ar)"/>
+    <line x1="525" y1="340" x2="525" y2="400" marker-end="url(#ar)"/>
+    <line x1="525" y1="450" x2="525" y2="510" marker-end="url(#ar)"/>
+
+    <!-- Client.api.js -> Apache (HTTP JSON) — route en L -->
+    <path d="M 695 545 L 770 545 L 770 210 L 870 210" marker-end="url(#ar)"/>
+    <text class="proto" x="780" y="350">HTTP / JSON</text>
+    <text class="proto" x="780" y="368">cookie session</text>
+    <text class="proto" x="780" y="386">X-CSRF-Token</text>
+
+    <!-- Apache -> Client (réponses JSON) — route en L -->
+    <path d="M 870 240 L 810 240 L 810 570 L 695 570" marker-end="url(#ar)"/>
+    <text class="proto" x="820" y="465">réponses JSON</text>
+
+    <!-- Flux interne Serveur (haut -> bas) -->
+    <line x1="1110" y1="230" x2="1110" y2="280" marker-end="url(#ar)"/>
+    <line x1="1110" y1="330" x2="1110" y2="380" marker-end="url(#ar)"/>
+    <line x1="1110" y1="430" x2="1110" y2="480" marker-end="url(#ar)"/>
+    <line x1="1110" y1="545" x2="1110" y2="610" marker-end="url(#ar)"/>
+    <line x1="1110" y1="670" x2="1110" y2="725" marker-end="url(#ar)"/>
+
+    <!-- Serveur (PDO) -> Base (SQL préparé) — route en L -->
+    <path d="M 1350 750 L 1425 750 L 1425 460 L 1485 460" marker-end="url(#ar)"/>
+    <text class="proto" x="1395" y="615">SQL préparé</text>
+
+    <!-- Base -> Serveur (résultats) — route en L -->
+    <path d="M 1485 440 L 1450 440 L 1450 775 L 1350 775" marker-end="url(#ar)"/>
+    <text class="proto" x="1395" y="525">résultats</text>
+
+  </svg>
+
+  <!-- ======================= LÉGENDE ======================= -->
+  <div class="legend">
+    <b>Légende</b> &nbsp;·&nbsp;
+    <span class="dot" style="background:#e7f1fb;border-color:#2766b8;"></span>Frontend (navigateur) &nbsp;·&nbsp;
+    <span class="dot" style="background:#fff3df;border-color:#b87a18;"></span>Backend (PHP / Apache) &nbsp;·&nbsp;
+    <span class="dot" style="background:#e6f5ea;border-color:#1f7a3a;"></span>Base de données (MySQL) &nbsp;·&nbsp;
+    <span class="dot" style="background:#f0eaf7;border-color:#5a3a8a;border-radius:50%;"></span>Utilisateur
+  </div>
+
+</div>
+
+</body>
+</html>
