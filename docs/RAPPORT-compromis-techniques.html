@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>RAPPORT DE COMPROMIS<br>TECHNIQUES — SmartCampus</title>
+<style>
+@page { size: A4; margin: 22mm 18mm 22mm 18mm; }
+@page :first { margin: 0; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+  font-size: 11pt; line-height: 1.45; color: #1a1a1a;
+}
+:root { --ece: #00807F; --ece-soft: #E6F1F1; --ece-dark: #006666; }
+h1, h2, h3, h4 { color: var(--ece); font-weight: 700; }
+h1 { font-size: 18pt; margin: 0 0 4mm 0; }
+h2 { font-size: 14pt; margin: 6mm 0 3mm 0; page-break-after: avoid;
+     border-bottom: 0.4pt solid var(--ece-soft); padding-bottom: 1mm; }
+h3 { font-size: 12pt; margin: 4mm 0 2mm 0; page-break-after: avoid; }
+h4 { font-size: 11pt; margin: 3mm 0 1mm 0; }
+p { margin: 0 0 2.5mm 0; text-align: justify; }
+ul, ol { margin: 0 0 3mm 0; padding-left: 6mm; }
+li { margin-bottom: 1mm; }
+strong { color: var(--ece-dark); }
+blockquote {
+  border-left: 2pt solid var(--ece);
+  background: var(--ece-soft);
+  padding: 3mm 4mm; margin: 3mm 0;
+  font-style: italic; color: #3d3d3d;
+}
+code {
+  font-family: "Consolas", monospace; font-size: 9.5pt;
+  background: #f4f4f4; padding: 0.5mm 1.5mm; border-radius: 1mm;
+}
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm 0;
+        font-size: 10pt; page-break-inside: avoid; }
+thead th { background: var(--ece); color: #fff; text-align: left;
+           padding: 1.5mm 2mm; font-weight: 600; }
+tbody td { border: 0.3pt solid #c8c8c8; padding: 1.5mm 2mm; vertical-align: top; }
+tbody tr:nth-child(even) td { background: #fafafa; }
+
+.cover { height: 297mm; width: 210mm; box-sizing: border-box;
+         page-break-after: always; position: relative; overflow: hidden; }
+.cv-logo { position: absolute; top: 18mm; left: 18mm; }
+.cv-logo img { width: 32mm; height: 32mm; display: block; }
+.cv-ing { position: absolute; top: 18mm; right: 18mm;
+          color: #4a4a4a; font-size: 10pt; text-align: right; }
+.cv-title {
+  position: absolute; top: 90mm; left: 18mm; right: 18mm;
+  padding: 8mm 4mm;
+  border-top: 1.2pt solid var(--ece); border-bottom: 1.2pt solid var(--ece);
+  text-align: center;
+}
+.cv-title .doc-type {
+  color: var(--ece); font-size: 22pt; font-weight: 800;
+  letter-spacing: 0.5pt; margin-bottom: 3mm;
+}
+.cv-title .doc-subtitle {
+  color: var(--ece); font-size: 14pt; font-style: italic; font-weight: 500;
+}
+.cv-meta {
+  position: absolute; top: 150mm; left: 18mm; right: 18mm;
+  font-size: 11pt;
+}
+.cv-meta .label { font-style: italic; color: #4a4a4a; margin-bottom: 3mm; }
+.cv-meta .name { margin-bottom: 1.5mm; }
+.cv-footer {
+  position: absolute; bottom: 18mm; left: 18mm; right: 18mm;
+  border-top: 0.4pt solid #c8c8c8; padding-top: 4mm;
+  font-size: 9.5pt; color: #4a4a4a; text-align: center;
+}
+.body { padding: 0; }
+</style></head><body>
+
+<div class="cover">
+  <div class="cv-logo"><img src="file:///C:/Users/vikto/Desktop/projet%20web%20dynamique/smartcampus/docs/assets/ece-logo.jpg" alt="ECE"></div>
+  <div class="cv-ing">ING2<br>Projet Web dynamique 2026</div>
+  <div class="cv-title">
+    <div class="doc-type">RAPPORT DE COMPROMIS<br>TECHNIQUES</div>
+    <div class="doc-subtitle">Décisions de conception &amp; limites du projet</div>
+  </div>
+  <div class="cv-meta">
+    <div class="label">Équipe SmartCampus</div>
+    <div class="name">Viktor GOUSSOT</div>
+    <div class="name">Nicolas CARMINATI</div>
+    <div class="name">Louis PEZE</div>
+    <div class="name">Alexis OSORIO</div>
+  </div>
+  <div class="cv-footer">
+    SmartCampus &nbsp;·&nbsp; Sujet 2 — La gestion académique de notre époque &nbsp;·&nbsp; 31 mai 2026
+  </div>
+</div>
+
+<div class="body"><h1>Rapport de compromis techniques et décisions de conception — SmartCampus</h1>
+<blockquote>
+<p>Objectif (sujet) : montrer une démarche d'ingénieur — analyser des contraintes, prendre
+des décisions, identifier les limites. Il ne s'agit pas de présenter un projet « parfait ».</p>
+</blockquote>
+<h2>1. Décisions de conception majeures</h2>
+<h3>1.1 Sessions PHP plutôt que JWT</h3>
+<p><strong>Choix</strong> : authentification par session PHP + cookie <code>HttpOnly</code>/<code>SameSite=Lax</code>.
+<strong>Justification</strong> : l'application est servie en <strong>même origine</strong> (Apache sert le front et
+l'API). Les sessions évitent la gestion d'expiration/stockage des tokens côté client et
+réduisent la surface d'attaque (cookie inaccessible au JS). Le JWT aurait ajouté de la
+complexité sans bénéfice ici.
+<strong>Compromis</strong> : moins adapté à une API multi-clients (mobile natif) — acceptable dans notre
+périmètre.</p>
+<h3>1.2 Mini-noyau MVC plutôt qu'un framework</h3>
+<p><strong>Choix</strong> : routeur + contrôleurs maison (≈ 6 classes de cœur).
+<strong>Justification</strong> : le sujet déconseille les générateurs produisant l'essentiel de
+l'architecture, et valorise la <strong>compréhension</strong>. Chaque mécanisme est court et explicable.
+<strong>Compromis</strong> : on réécrit des briques fournies par les frameworks (routage, validation),
+mais on garde la maîtrise totale du code.</p>
+<h3>1.3 Héritage <code>users</code> + tables profil (1-1)</h3>
+<p><strong>Choix</strong> : une table <code>users</code> commune + <code>student_profiles</code> / <code>teacher_profiles</code>.
+<strong>Justification</strong> : authentification unifiée, e-mails uniques sur tous les comptes,
+messagerie qui référence simplement <code>users</code>.
+<strong>Alternative écartée</strong> : trois tables totalement séparées → duplication de la logique
+d'authentification et complications pour les relations transverses.</p>
+<h3>1.4 Règles métier centralisées dans <code>core/Academic.php</code></h3>
+<p><strong>Choix</strong> : moyennes, prérequis et conflits horaires dans une classe dédiée.
+<strong>Justification</strong> : éviter la duplication (utilisées par plusieurs contrôleurs) et avoir
+<strong>un seul endroit</strong> où la règle est définie → plus facile à tester et à expliquer.</p>
+<h3>1.5 Frontend en modules ES sans build</h3>
+<p><strong>Choix</strong> : JavaScript natif (ES modules), pas de bundler (Webpack/Vite).
+<strong>Justification</strong> : pas d'étape de compilation → projet <strong>exécutable directement</strong> sous
+WAMP, plus simple à corriger et à comprendre.
+<strong>Compromis</strong> : pas d'optimisation de bundle ; acceptable pour la taille du projet.</p>
+<h3>1.6 Vendors en local plutôt que CDN</h3>
+<p><strong>Choix</strong> : Bootstrap, Bootstrap Icons et Chart.js téléchargés dans <code>assets/vendor/</code>.
+<strong>Justification</strong> : la <strong>démonstration fonctionne hors-ligne</strong> et reste reproductible.
+<strong>Compromis</strong> : ~900 Ko de fichiers versionnés — négligeable.</p>
+<h2>2. Fonctionnalités envisagées puis simplifiées / abandonnées</h2>
+<ul>
+<li><strong>Suivi des présences (QR code)</strong> : prévu en option, non retenu pour se concentrer sur
+  les fonctionnalités obligatoires et trois bonus solides (PDF, messagerie, stats).</li>
+<li><strong>Notifications en temps réel (WebSocket)</strong> : remplacées par un <strong>polling</strong> simple
+  (rafraîchissement périodique) — suffisant et bien plus simple à déployer sous WAMP.</li>
+<li><strong>Upload de photos de profil</strong> : champ prévu dans le schéma (<code>photo</code>) mais non câblé à
+  une UI d'upload, faute de priorité.</li>
+</ul>
+<h2>3. Difficultés techniques rencontrées</h2>
+<ul>
+<li><strong>Génération PDF (FPDF)</strong> : PDF corrompu car le dossier de polices manquait et une alerte
+  PHP s'insérait avant le flux binaire. Résolu en ajoutant <code>api/lib/font/</code> et en
+  désactivant l'affichage des erreurs sur cet endpoint.</li>
+<li><strong>Détection des conflits horaires</strong> : exprimer le chevauchement en SQL
+  (<code>a.start &lt; b.end AND a.end &gt; b.start</code>) et distinguer conflit <em>ressource</em> (salle/prof) et
+  conflit <em>étudiant</em> (deux cours suivis).</li>
+<li><strong>Routage sans framework</strong> : gérer les segments dynamiques (<code>{id}</code>) et la compatibilité
+  <code>.htaccess</code> (Apache) vs serveur intégré PHP (mode test).</li>
+</ul>
+<h2>4. Limites actuelles du système</h2>
+<ul>
+<li><strong>Pas de pagination</strong> sur les listes (suffisant pour le volume de démonstration, à
+  ajouter pour de grands effectifs).</li>
+<li><strong>Sécurité « pédagogique »</strong> : pas de limitation du nombre de tentatives de connexion
+  (rate limiting), pas de HTTPS en local, pas de politique de mot de passe avancée.</li>
+<li><strong>Moyenne générale</strong> pondérée par les crédits ECTS, mais sans gestion fine des
+  compensations/rattrapages propres à chaque cursus.</li>
+<li><strong>Emploi du temps</strong> hebdomadaire générique (pas de gestion de dates calendaires ni de
+  semaines A/B).</li>
+</ul>
+<h2>5. Pistes d'évolution</h2>
+<p>Pagination et recherche serveur avancée, présences/QR code, export Excel, calendrier
+interactif, notifications temps réel, tests automatisés (PHPUnit / Playwright).</p></div>
+</body></html>

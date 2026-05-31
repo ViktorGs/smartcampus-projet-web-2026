@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>RÉPARTITION<br>DU TRAVAIL — SmartCampus</title>
+<style>
+@page { size: A4; margin: 22mm 18mm 22mm 18mm; }
+@page :first { margin: 0; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+  font-size: 11pt; line-height: 1.45; color: #1a1a1a;
+}
+:root { --ece: #00807F; --ece-soft: #E6F1F1; --ece-dark: #006666; }
+h1, h2, h3, h4 { color: var(--ece); font-weight: 700; }
+h1 { font-size: 18pt; margin: 0 0 4mm 0; }
+h2 { font-size: 14pt; margin: 6mm 0 3mm 0; page-break-after: avoid;
+     border-bottom: 0.4pt solid var(--ece-soft); padding-bottom: 1mm; }
+h3 { font-size: 12pt; margin: 4mm 0 2mm 0; page-break-after: avoid; }
+h4 { font-size: 11pt; margin: 3mm 0 1mm 0; }
+p { margin: 0 0 2.5mm 0; text-align: justify; }
+ul, ol { margin: 0 0 3mm 0; padding-left: 6mm; }
+li { margin-bottom: 1mm; }
+strong { color: var(--ece-dark); }
+blockquote {
+  border-left: 2pt solid var(--ece);
+  background: var(--ece-soft);
+  padding: 3mm 4mm; margin: 3mm 0;
+  font-style: italic; color: #3d3d3d;
+}
+code {
+  font-family: "Consolas", monospace; font-size: 9.5pt;
+  background: #f4f4f4; padding: 0.5mm 1.5mm; border-radius: 1mm;
+}
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm 0;
+        font-size: 10pt; page-break-inside: avoid; }
+thead th { background: var(--ece); color: #fff; text-align: left;
+           padding: 1.5mm 2mm; font-weight: 600; }
+tbody td { border: 0.3pt solid #c8c8c8; padding: 1.5mm 2mm; vertical-align: top; }
+tbody tr:nth-child(even) td { background: #fafafa; }
+
+.cover { height: 297mm; width: 210mm; box-sizing: border-box;
+         page-break-after: always; position: relative; overflow: hidden; }
+.cv-logo { position: absolute; top: 18mm; left: 18mm; }
+.cv-logo img { width: 32mm; height: 32mm; display: block; }
+.cv-ing { position: absolute; top: 18mm; right: 18mm;
+          color: #4a4a4a; font-size: 10pt; text-align: right; }
+.cv-title {
+  position: absolute; top: 90mm; left: 18mm; right: 18mm;
+  padding: 8mm 4mm;
+  border-top: 1.2pt solid var(--ece); border-bottom: 1.2pt solid var(--ece);
+  text-align: center;
+}
+.cv-title .doc-type {
+  color: var(--ece); font-size: 22pt; font-weight: 800;
+  letter-spacing: 0.5pt; margin-bottom: 3mm;
+}
+.cv-title .doc-subtitle {
+  color: var(--ece); font-size: 14pt; font-style: italic; font-weight: 500;
+}
+.cv-meta {
+  position: absolute; top: 150mm; left: 18mm; right: 18mm;
+  font-size: 11pt;
+}
+.cv-meta .label { font-style: italic; color: #4a4a4a; margin-bottom: 3mm; }
+.cv-meta .name { margin-bottom: 1.5mm; }
+.cv-footer {
+  position: absolute; bottom: 18mm; left: 18mm; right: 18mm;
+  border-top: 0.4pt solid #c8c8c8; padding-top: 4mm;
+  font-size: 9.5pt; color: #4a4a4a; text-align: center;
+}
+.body { padding: 0; }
+</style></head><body>
+
+<div class="cover">
+  <div class="cv-logo"><img src="file:///C:/Users/vikto/Desktop/projet%20web%20dynamique/smartcampus/docs/assets/ece-logo.jpg" alt="ECE"></div>
+  <div class="cv-ing">ING2<br>Projet Web dynamique 2026</div>
+  <div class="cv-title">
+    <div class="doc-type">RÉPARTITION<br>DU TRAVAIL</div>
+    <div class="doc-subtitle">Rôles, modules, bilans individuels &amp; collectif</div>
+  </div>
+  <div class="cv-meta">
+    <div class="label">Équipe SmartCampus</div>
+    <div class="name">Viktor GOUSSOT</div>
+    <div class="name">Nicolas CARMINATI</div>
+    <div class="name">Louis PEZE</div>
+    <div class="name">Alexis OSORIO</div>
+  </div>
+  <div class="cv-footer">
+    SmartCampus &nbsp;·&nbsp; Sujet 2 — La gestion académique de notre époque &nbsp;·&nbsp; 31 mai 2026
+  </div>
+</div>
+
+<div class="body"><h1>Répartition du travail — SmartCampus</h1>
+<h2>1. Membres de l'équipe</h2>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Nom / Prénom</th>
+<th>Rôle principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Viktor GOUSSOT</td>
+<td>Chef de projet · Backend (noyau API, authentification, sécurité CSRF/RBAC)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Nicolas CARMINATI</td>
+<td>Backend (modèle de données, règles métier, contrôleurs CRUD)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Louis PEZE</td>
+<td>Frontend (coquille SPA, design Bootstrap, pages gestion)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Alexis OSORIO</td>
+<td>Frontend (tableaux de bord, emploi du temps, statistiques) + tests</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Répartition par module</h2>
+<table>
+<thead>
+<tr>
+<th>Module / Tâche</th>
+<th>Responsable principal</th>
+<th>Contributeurs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Conception modèle de données (MCD, schéma SQL)</td>
+<td>Nicolas CARMINATI</td>
+<td>Viktor GOUSSOT</td>
+</tr>
+<tr>
+<td>Noyau backend (Router, Auth, sécurité CSRF/RBAC)</td>
+<td>Viktor GOUSSOT</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Règles métier (double inscription, capacités, prérequis, conflits, verrouillage notes)</td>
+<td>Nicolas CARMINATI</td>
+<td>Viktor GOUSSOT</td>
+</tr>
+<tr>
+<td>API CRUD (utilisateurs, étudiants, enseignants, cours)</td>
+<td>Viktor GOUSSOT</td>
+<td>Nicolas CARMINATI</td>
+</tr>
+<tr>
+<td>API inscriptions et notes</td>
+<td>Nicolas CARMINATI</td>
+<td>Viktor GOUSSOT</td>
+</tr>
+<tr>
+<td>Authentification, sessions, jeton CSRF</td>
+<td>Viktor GOUSSOT</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Frontend — noyau (api.js, routeur SPA, UI, auth)</td>
+<td>Louis PEZE</td>
+<td>Alexis OSORIO</td>
+</tr>
+<tr>
+<td>Frontend — pages gestion (étudiants, enseignants, cours)</td>
+<td>Louis PEZE</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Frontend — espace étudiant (mes cours, notes, profil)</td>
+<td>Alexis OSORIO</td>
+<td>Louis PEZE</td>
+</tr>
+<tr>
+<td>Tableaux de bord par rôle</td>
+<td>Alexis OSORIO</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Emploi du temps (UI + API)</td>
+<td>Alexis OSORIO</td>
+<td>Nicolas CARMINATI</td>
+</tr>
+<tr>
+<td>Filtrage / tri des cours</td>
+<td>Louis PEZE</td>
+<td>Viktor GOUSSOT</td>
+</tr>
+<tr>
+<td>Bonus — relevé de notes PDF (FPDF)</td>
+<td>Nicolas CARMINATI</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Bonus — messagerie &amp; notifications</td>
+<td>Louis PEZE</td>
+<td>Alexis OSORIO</td>
+</tr>
+<tr>
+<td>Bonus — statistiques (Chart.js)</td>
+<td>Alexis OSORIO</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Documentation (specs, MCD, archi, wireframes, compromis)</td>
+<td>Tous</td>
+<td>—</td>
+</tr>
+<tr>
+<td>Tests fonctionnels &amp; préparation démonstration</td>
+<td>Alexis OSORIO</td>
+<td>Tous</td>
+</tr>
+</tbody>
+</table>
+<h2>3. Organisation du travail</h2>
+<ul>
+<li><strong>Versioning</strong> : dépôt Git/GitHub <code>smartcampus-projet-web-2026</code>, commits réguliers
+  préfixés par convention (<code>feat:</code>, <code>fix:</code>, <code>docs:</code>, <code>chore:</code>). Voir
+  <code>docs/GUIDE-SOUTENANCE.md</code> pour la présentation Git.</li>
+<li><strong>Branches</strong> : <code>main</code> stable ; branches courtes par fonctionnalité, fusionnées par
+  <em>pull request</em> après relecture croisée.</li>
+<li><strong>Communication</strong> : points d'avancement réguliers en présentiel et via messagerie
+  d'équipe ; chaque membre relit le code des autres pour pouvoir l'expliquer en
+  soutenance (objectif pédagogique du module).</li>
+<li><strong>Outils</strong> : VS Code, WAMP local, MySQL Workbench, Figma (wireframes), Canva
+  (PowerPoint).</li>
+</ul>
+<h2>4. Bilan individuel</h2>
+<h3>Viktor GOUSSOT (chef de projet, backend)</h3>
+<ul>
+<li><strong>Réalisé</strong> : noyau backend (routeur REST, connexion PDO, validateur, réponses
+  JSON), authentification par session + cookie HttpOnly, jeton CSRF, contrôle d'accès
+  par rôle (RBAC), CRUD principal (utilisateurs, étudiants, enseignants, cours).</li>
+<li><strong>Appris</strong> : architecture MVC sans framework, sécurité applicative (CSRF, XSS, SQL
+  injection), gestion d'équipe et revue de code.</li>
+<li><strong>Difficultés</strong> : routage des segments dynamiques (<code>{id}</code>) en compatibilité Apache
+  <code>.htaccess</code> et serveur PHP intégré (mode test).</li>
+<li><strong>Contribution collective</strong> : pilotage du projet, revues de code, intégration.</li>
+</ul>
+<h3>Nicolas CARMINATI (backend, base de données, règles métier)</h3>
+<ul>
+<li><strong>Réalisé</strong> : MCD + modèle relationnel, schéma SQL avec contraintes et clés
+  étrangères, jeu de données de démonstration, règles métier centralisées dans
+  <code>core/Academic.php</code> (calcul des moyennes pondérées par ECTS, détection de conflits
+  horaires en SQL, vérification des prérequis), génération PDF FPDF du relevé.</li>
+<li><strong>Appris</strong> : modélisation académique réaliste, écriture de règles SQL non triviales
+  (chevauchement d'intervalles), gestion d'erreurs côté serveur.</li>
+<li><strong>Difficultés</strong> : génération PDF cassée par un warning PHP avant le flux binaire
+  (résolu en désactivant les erreurs sur cet endpoint et ajoutant le dossier <code>font/</code>).</li>
+<li><strong>Contribution collective</strong> : référent base de données et règles métier.</li>
+</ul>
+<h3>Louis PEZE (frontend — noyau et pages de gestion)</h3>
+<ul>
+<li><strong>Réalisé</strong> : coquille SPA (<code>index.html</code>, routeur JS, gestion d'état, client REST
+  avec CSRF), pages de gestion (étudiants, enseignants, cours), recherche et
+  filtrage des cours, messagerie interne, design Bootstrap responsive.</li>
+<li><strong>Appris</strong> : modules ES natifs, fetch + sessions, design system Bootstrap.</li>
+<li><strong>Difficultés</strong> : cohérence entre les états (cache local) et la base après une
+  modification simultanée par plusieurs utilisateurs ; résolu par rafraîchissement
+  ciblé après chaque mutation.</li>
+<li><strong>Contribution collective</strong> : référent ergonomie et accessibilité.</li>
+</ul>
+<h3>Alexis OSORIO (frontend — dashboards, EDT, stats, tests)</h3>
+<ul>
+<li><strong>Réalisé</strong> : tableaux de bord adaptés aux 3 rôles, page emploi du temps avec
+  détection visuelle des conflits, page « mes cours » et notes côté étudiant,
+  statistiques avec Chart.js, scénarios de tests fonctionnels manuels.</li>
+<li><strong>Appris</strong> : visualisation de données (Chart.js), conception d'interfaces
+  contextuelles par rôle.</li>
+<li><strong>Difficultés</strong> : présentation d'un emploi du temps lisible sur petit écran ;
+  résolu par une vue listée en mobile et une grille en desktop.</li>
+<li><strong>Contribution collective</strong> : préparation du scénario de démonstration et des
+  jeux de données de présentation.</li>
+</ul>
+<h2>5. Bilan collectif</h2>
+<ul>
+<li><strong>Ce qui a bien fonctionné</strong> : séparation nette front/back, conventions de commit
+  partagées, mini-noyau MVC clair que chaque membre peut expliquer, choix d'un
+  contexte d'établissement précis (école d'ingénieurs) qui a guidé les décisions
+  fonctionnelles.</li>
+<li><strong>Ce qui a été difficile</strong> : modélisation des règles métier transverses
+  (notamment les conflits horaires étudiant <em>et</em> ressource), gestion fine des
+  permissions (3 rôles × N actions), choix d'écarter certaines fonctionnalités
+  séduisantes mais hors-périmètre (QR code, WebSocket temps réel).</li>
+<li><strong>Ce que l'on referait différemment</strong> : mettre en place plus tôt un suivi des
+  régressions (tests automatisés), commencer par la maquette des dashboards (point
+  de convergence de toutes les fonctionnalités), prévoir la pagination dès le départ.</li>
+</ul></div>
+</body></html>

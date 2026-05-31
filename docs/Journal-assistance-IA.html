@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><title>JOURNAL<br>D'ASSISTANCE IA — SmartCampus</title>
+<style>
+@page { size: A4; margin: 22mm 18mm 22mm 18mm; }
+@page :first { margin: 0; }
+html, body { margin: 0; padding: 0; }
+body {
+  font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+  font-size: 11pt; line-height: 1.45; color: #1a1a1a;
+}
+:root { --ece: #00807F; --ece-soft: #E6F1F1; --ece-dark: #006666; }
+h1, h2, h3, h4 { color: var(--ece); font-weight: 700; }
+h1 { font-size: 18pt; margin: 0 0 4mm 0; }
+h2 { font-size: 14pt; margin: 6mm 0 3mm 0; page-break-after: avoid;
+     border-bottom: 0.4pt solid var(--ece-soft); padding-bottom: 1mm; }
+h3 { font-size: 12pt; margin: 4mm 0 2mm 0; page-break-after: avoid; }
+h4 { font-size: 11pt; margin: 3mm 0 1mm 0; }
+p { margin: 0 0 2.5mm 0; text-align: justify; }
+ul, ol { margin: 0 0 3mm 0; padding-left: 6mm; }
+li { margin-bottom: 1mm; }
+strong { color: var(--ece-dark); }
+blockquote {
+  border-left: 2pt solid var(--ece);
+  background: var(--ece-soft);
+  padding: 3mm 4mm; margin: 3mm 0;
+  font-style: italic; color: #3d3d3d;
+}
+code {
+  font-family: "Consolas", monospace; font-size: 9.5pt;
+  background: #f4f4f4; padding: 0.5mm 1.5mm; border-radius: 1mm;
+}
+table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm 0;
+        font-size: 10pt; page-break-inside: avoid; }
+thead th { background: var(--ece); color: #fff; text-align: left;
+           padding: 1.5mm 2mm; font-weight: 600; }
+tbody td { border: 0.3pt solid #c8c8c8; padding: 1.5mm 2mm; vertical-align: top; }
+tbody tr:nth-child(even) td { background: #fafafa; }
+
+.cover { height: 297mm; width: 210mm; box-sizing: border-box;
+         page-break-after: always; position: relative; overflow: hidden; }
+.cv-logo { position: absolute; top: 18mm; left: 18mm; }
+.cv-logo img { width: 32mm; height: 32mm; display: block; }
+.cv-ing { position: absolute; top: 18mm; right: 18mm;
+          color: #4a4a4a; font-size: 10pt; text-align: right; }
+.cv-title {
+  position: absolute; top: 90mm; left: 18mm; right: 18mm;
+  padding: 8mm 4mm;
+  border-top: 1.2pt solid var(--ece); border-bottom: 1.2pt solid var(--ece);
+  text-align: center;
+}
+.cv-title .doc-type {
+  color: var(--ece); font-size: 22pt; font-weight: 800;
+  letter-spacing: 0.5pt; margin-bottom: 3mm;
+}
+.cv-title .doc-subtitle {
+  color: var(--ece); font-size: 14pt; font-style: italic; font-weight: 500;
+}
+.cv-meta {
+  position: absolute; top: 150mm; left: 18mm; right: 18mm;
+  font-size: 11pt;
+}
+.cv-meta .label { font-style: italic; color: #4a4a4a; margin-bottom: 3mm; }
+.cv-meta .name { margin-bottom: 1.5mm; }
+.cv-footer {
+  position: absolute; bottom: 18mm; left: 18mm; right: 18mm;
+  border-top: 0.4pt solid #c8c8c8; padding-top: 4mm;
+  font-size: 9.5pt; color: #4a4a4a; text-align: center;
+}
+.body { padding: 0; }
+</style></head><body>
+
+<div class="cover">
+  <div class="cv-logo"><img src="file:///C:/Users/vikto/Desktop/projet%20web%20dynamique/smartcampus/docs/assets/ece-logo.jpg" alt="ECE"></div>
+  <div class="cv-ing">ING2<br>Projet Web dynamique 2026</div>
+  <div class="cv-title">
+    <div class="doc-type">JOURNAL<br>D'ASSISTANCE IA</div>
+    <div class="doc-subtitle">Outils, tâches, analyse critique &amp; limites observées</div>
+  </div>
+  <div class="cv-meta">
+    <div class="label">Équipe SmartCampus</div>
+    <div class="name">Viktor GOUSSOT</div>
+    <div class="name">Nicolas CARMINATI</div>
+    <div class="name">Louis PEZE</div>
+    <div class="name">Alexis OSORIO</div>
+  </div>
+  <div class="cv-footer">
+    SmartCampus &nbsp;·&nbsp; Sujet 2 — La gestion académique de notre époque &nbsp;·&nbsp; 31 mai 2026
+  </div>
+</div>
+
+<div class="body"><h1>Journal d'assistance par IA — SmartCampus</h1>
+<blockquote>
+<p>Le sujet autorise l'usage d'outils d'IA générative et <strong>évalue le recul critique</strong>,
+pas l'abstinence. Ce journal documente honnêtement comment l'IA a été utilisée.
+<strong>À personnaliser</strong> : adaptez les exemples à votre vécu réel et complétez avec vos
+propres échanges.</p>
+</blockquote>
+<h2>1. Outils utilisés</h2>
+<table>
+<thead>
+<tr>
+<th>Outil</th>
+<th>Usage principal</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Assistant IA (Claude / ChatGPT)</td>
+<td>Aide à la conception (modèle de données), génération de squelettes de code, explication de mécanismes (CSRF, PDO), débogage</td>
+</tr>
+<tr>
+<td>Documentation officielle</td>
+<td>PHP (PDO, password_hash), MDN (fetch, ES modules), Bootstrap, FPDF</td>
+</tr>
+</tbody>
+</table>
+<h2>2. Tâches assistées par IA</h2>
+<ul>
+<li>Conception du <strong>modèle entité-association</strong> et discussion des cardinalités (héritage
+  <code>users</code> → profils).</li>
+<li>Mise en place du <strong>noyau backend</strong> (routeur REST, réponses JSON, validation).</li>
+<li>Implémentation des <strong>règles métier</strong> (détection de conflits d'emploi du temps en SQL).</li>
+<li>Génération de <strong>composants frontend répétitifs</strong> (formulaires modaux, tableaux).</li>
+<li><strong>Débogage</strong> (ex. génération PDF cassée par une alerte PHP).</li>
+</ul>
+<h2>3. Réponses utiles</h2>
+<ul>
+<li>La structure d'un <strong>mini-MVC sans framework</strong> proposée par l'IA était claire et facile
+  à expliquer ; nous l'avons adoptée.</li>
+<li>La requête SQL de <strong>détection de chevauchement horaire</strong>
+  (<code>start_time &lt; ? AND end_time &gt; ?</code>) était correcte et concise.</li>
+<li>Les bonnes pratiques de <strong>sécurité</strong> (hash bcrypt, requêtes préparées, cookie HttpOnly,
+  jeton CSRF) ont été correctement rappelées.</li>
+</ul>
+<h2>4. Réponses incorrectes / à corriger (recul critique)</h2>
+<blockquote>
+<p>C'est la partie la plus importante pour la note. Exemples réels rencontrés :</p>
+</blockquote>
+<ul>
+<li><strong>Génération PDF cassée</strong> : la première version utilisait FPDF sans le dossier de
+  polices (<code>font/</code>), ce qui produisait un PDF corrompu (une alerte PHP s'insérait avant
+  le binaire). <strong>Correction</strong> : ajout du dossier <code>font/</code> + désactivation de l'affichage
+  des erreurs sur l'endpoint binaire.</li>
+<li><strong>Tendance à proposer un framework</strong> (Laravel) : écarté car le sujet déconseille les
+  générateurs produisant l'architecture ; nous voulions un code <strong>maîtrisé et explicable</strong>.</li>
+<li><strong>JWT proposé pour l'authentification</strong> : remplacé par des <strong>sessions PHP</strong>, plus simples
+  et suffisantes pour une application servie en même origine.</li>
+<li><strong>Validation uniquement côté client</strong> suggérée initialement : nous avons re-validé
+  <strong>systématiquement côté serveur</strong> (le client peut être contourné).</li>
+<li><strong>Identifiants de base de données en clair</strong> dans le code : déplacés dans un
+  <code>config.local.php</code> non versionné.</li>
+</ul>
+<h2>5. Limites observées</h2>
+<ul>
+<li>L'IA peut produire du code <strong>plausible mais incomplet</strong> (dépendances manquantes comme
+  les polices FPDF) : il faut <strong>tester réellement</strong>.</li>
+<li>Elle ne connaît pas notre <strong>contexte précis</strong> (mot de passe MySQL, version de PHP) :
+  l'adaptation reste manuelle.</li>
+<li>Elle peut <strong>sur-dimensionner</strong> (proposer des outils non demandés) : tri nécessaire au
+  regard des contraintes pédagogiques.</li>
+</ul>
+<h2>6. Notre démarche de validation</h2>
+<p>Pour chaque portion générée : (1) <strong>lire et comprendre</strong> le code, (2) <strong>l'adapter</strong> à
+notre modèle/nommage, (3) <strong>le tester</strong> (API testée à la main + scénarios de règles
+métier), (4) <strong>savoir l'expliquer</strong> en soutenance. Toute fonctionnalité présentée peut
+être justifiée techniquement et fonctionnellement par l'équipe.</p></div>
+</body></html>
