@@ -699,15 +699,15 @@ add_text(s, Inches(0.5), Inches(1.2), Inches(12.3), Inches(0.4),
 add_text(s, Inches(0.5), Inches(1.75), Inches(6), Inches(0.4),
          "Historique de progression", size=16, bold=True, color=ACCENT)
 commits = [
-    ("20 mai", "chore: initialisation du projet (README, gitignore)"),
-    ("20 mai", "feat(db): schéma relationnel + données de démonstration"),
-    ("21 mai", "feat(api): noyau backend (PDO, routeur REST, auth, CSRF, validation)"),
-    ("22 mai", "feat(api): CRUD utilisateurs, étudiants, enseignants, cours"),
-    ("23 mai", "feat(api): inscriptions, notes, emploi du temps + règles métier"),
-    ("24 mai", "feat(api): bonus — relevé PDF, messagerie, notifications, dashboards, stats"),
-    ("25 mai", "feat(front): coquille SPA, design Bootstrap, noyau JS"),
-    ("26 mai", "feat(front): pages (dashboards, étudiants, cours, notes, EDT, messagerie, stats)"),
-    ("26 mai", "docs: spécifications, modèle de données, architecture, wireframes, rapports"),
+    ("25 mai", "chore: initialisation du projet (README, gitignore)"),
+    ("25 mai", "feat(db): schéma relationnel + données de démonstration"),
+    ("26 mai", "feat(api): noyau backend (PDO, routeur REST, auth, CSRF, validation)"),
+    ("27 mai", "feat(api): CRUD utilisateurs, étudiants, enseignants, cours"),
+    ("28 mai", "feat(api): inscriptions, notes, emploi du temps + règles métier"),
+    ("29 mai", "feat(api): bonus — relevé PDF, messagerie, notifications, dashboards, stats"),
+    ("30 mai", "feat(front): coquille SPA, design Bootstrap, noyau JS"),
+    ("30 mai", "feat(front): pages (dashboards, étudiants, cours, notes, EDT, messagerie, stats)"),
+    ("31 mai", "docs: spécifications, MCD, architecture, wireframes, rapports + livrable final"),
 ]
 y = Inches(2.25)
 for d, msg in commits:
