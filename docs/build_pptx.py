@@ -317,7 +317,7 @@ else:
              size=14, color=WHITE, anchor=MSO_ANCHOR.MIDDLE, align=PP_ALIGN.CENTER)
     add_rect(s, Inches(6.2), Inches(2.0), Inches(2.4), Inches(4.5), TEAL)
     add_text(s, Inches(6.3), Inches(2.1), Inches(2.2), Inches(4.3),
-             "MySQL 8\n\n• 13 tables\n• FK contraintes\n• Index pertinents",
+             "MySQL 8\n\n• 10 tables\n• FK contraintes\n• Index pertinents",
              size=14, color=WHITE, anchor=MSO_ANCHOR.MIDDLE, align=PP_ALIGN.CENTER)
 
 # Légende à droite
@@ -341,7 +341,7 @@ footer(s)
 s = prs.slides.add_slide(BLANK)
 slide_header(s, "4. Modèle entité-association (MCD)")
 add_text(s, Inches(0.5), Inches(1.2), Inches(12.3), Inches(0.4),
-         "13 entités, héritage users → profils, cardinalités cohérentes",
+         "10 entités, héritage users → profils, cardinalités cohérentes",
          size=14, color=GREY)
 
 mcd_png = ROOT / "Diagramme-ER.png"
@@ -353,10 +353,10 @@ add_text(s, Inches(9.7), Inches(1.8), Inches(3.3), Inches(0.4),
 add_bullets(s, Inches(9.7), Inches(2.2), Inches(3.3), Inches(5.0), [
     "users + student_profiles + teacher_profiles (héritage 1-1)",
     "Authentification unifiée, emails uniques tous rôles",
-    "courses ⟷ enrollments ⟷ students (table de jointure)",
-    "grades : (enrollment, assessment, value, locked)",
-    "schedule_slots : créneaux horaires liés à un cours + salle + prof",
-    "messages : référencent users (anti-duplication)",
+    "courses ⟷ enrollments ⟷ students (UNIQUE étudiant+cours)",
+    "grades : note typée (CC1/CC2/DS/Projet/Examen) + is_locked",
+    "schedule_slots : créneau (jour, heure, salle) lié au cours",
+    "messages & notifications : référencent directement users",
 ], size=11)
 footer(s)
 
@@ -370,24 +370,20 @@ add_text(s, Inches(0.5), Inches(1.2), Inches(12.3), Inches(0.4),
          "Tables principales (clés primaires soulignées · #clé étrangère)",
          size=14, color=GREY)
 
-# Présenté en deux colonnes
+# Présenté en deux colonnes (10 tables — schéma réel)
 left_lines = [
-    ("users",            "(id, email, password_hash, role, full_name, created_at)"),
-    ("student_profiles", "(#user_id, student_number, level, programme_id, group_label, ...)"),
-    ("teacher_profiles", "(#user_id, office, title, biography, ...)"),
-    ("programmes",       "(id, code, name, level)"),
-    ("courses",          "(id, code, name, ects, semester, capacity, #teacher_id, #programme_id)"),
+    ("users",            "(id, role, email, password_hash, first_name, last_name, gender, phone, is_active, created_at)"),
+    ("student_profiles", "(#user_id, student_number, filiere, niveau, group_td, date_naissance, date_inscription)"),
+    ("teacher_profiles", "(#user_id, employee_number, department, grade, office, hire_date)"),
+    ("courses",          "(id, code, name, credits, semester, niveau, department, #teacher_id, capacity, is_archived)"),
     ("prerequisites",    "(#course_id, #prerequisite_course_id)"),
-    ("rooms",            "(id, label, capacity, building)"),
 ]
 right_lines = [
-    ("enrollments",      "(id, #student_id, #course_id, enrolled_at, status)"),
-    ("assessments",      "(id, #course_id, label, type, weight, due_date)"),
-    ("grades",           "(id, #enrollment_id, #assessment_id, value, locked, locked_at)"),
-    ("schedule_slots",   "(id, #course_id, #room_id, weekday, start_time, end_time)"),
-    ("messages",         "(id, #sender_id, #recipient_id, subject, body, sent_at, read_at)"),
-    ("notifications",    "(id, #user_id, type, payload, created_at, read_at)"),
-    ("audit_logs",       "(id, #user_id, action, target, created_at)"),
+    ("enrollments",      "(id, #student_id, #course_id, enrolled_at, status)  ·  UNIQUE(student, course)"),
+    ("grades",           "(id, #student_id, #course_id, eval_type, value, coefficient, is_locked, #graded_by)"),
+    ("schedule_slots",   "(id, #course_id, day_of_week, start_time, end_time, room, group_td)"),
+    ("messages",         "(id, #sender_id, #recipient_id, subject, body, is_read, sent_at, read_at)"),
+    ("notifications",    "(id, #user_id, type, title, content, link, is_read, created_at)"),
 ]
 def render_tables(slide, x, items):
     y = Inches(1.75)
